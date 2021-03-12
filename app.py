@@ -8,18 +8,19 @@ import plotly.express as px
 
 ########### Define your variables
 tabtitle='SERF: Parameter Space Testing'
+
 #### Import Fit Data
-#V5
+# 04-03-21 MLOOP-166-loop
 ALL_data_fit_values_v5 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv')
-#V6
-ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/GA/Full_fit_Data_V6.csv')
+# 08-03-21 GA-50-sample
+ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21-Full_fit_Data.csv')
 
 
 # Create col of A/C:
 # 04-03-21 MLOOP-166-loop
 ALL_data_fit_values_v5["V/nT"] =  abs(ALL_data_fit_values_v5['A'])/abs(ALL_data_fit_values_v5['G2'])
 ALL_data_fit_values_v5["SE"] =  abs(ALL_data_fit_values_v5['G2'])-abs(ALL_data_fit_values_v5['G1'])
-#V6
+# 08-03-21 GA-50-sample
 ALL_data_fit_values_v6["V/nT"] =  abs(ALL_data_fit_values_v6['A'])/abs(ALL_data_fit_values_v6['G2'])
 ALL_data_fit_values_v6["SE"] =  abs(ALL_data_fit_values_v6['G2'])-abs(ALL_data_fit_values_v6['G1'])
 
@@ -29,8 +30,8 @@ df = ALL_data_fit_values_v5
 # File names
 # 04-03-21 MLOOP-166-loop
 Github_urls_v5 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Github_urls_sorted.csv")
-#v6
-Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/GA/Github_urls_sortedV6.csv")
+# 08-03-21 GA-50-sample
+Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21Github_urls_sorted.csv")
 
 # Inital data to show (selected point)
 x = 14
@@ -40,7 +41,6 @@ colors = {
     'background': '#f2f2f2',
     'text': '#7FDBFF'
 }
-
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -79,12 +79,12 @@ app.layout = html.Div(children=[
                      ),  # Define the 1st column
              html.Div(className='five columns div-for-charts',
                       children = [
-                        html.H6('All Parameter Space Data'),
+                        html.H6('Version 2: All Parameter Space Data'),
                         dcc.Dropdown(
                             id='segselect',
                             options=[
                                 {'label': 'M-LOOP (166 Loop, 04-03-21)', 'value': 'ML3'},
-                                {'label': 'V2: GA V1', 'value': 'GA1'},
+                                {'label': 'GA (50 sample, 08-03-21)', 'value': 'GA1'},
                             ],
                             value='ML3'
                         ),     
