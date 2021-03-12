@@ -8,34 +8,15 @@ import plotly.express as px
 
 ########### Define your variables
 tabtitle='SERF: Parameter Space Testing'
-
 #### Import Fit Data
-ALL_data_fit_values = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/Full_fit_Data.csv')
-#V2
-ALL_data_fit_values_v2 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/Full_fit_Data_V2.csv')
-#V3
-ALL_data_fit_values_v3 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Full_fit_Data_V3.csv')
-#V4
-ALL_data_fit_values_v4 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Full_fit_Data_V4.csv')
 #V5
-ALL_data_fit_values_v5 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Full_fit_Data_V5.csv')
+ALL_data_fit_values_v5 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv')
 #V6
 ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/GA/Full_fit_Data_V6.csv')
 
 
 # Create col of A/C:
-ALL_data_fit_values["V/nT"] =  abs(ALL_data_fit_values['A'])/abs(ALL_data_fit_values['G2'])
-ALL_data_fit_values["SE"] =  abs(ALL_data_fit_values['G2'])-abs(ALL_data_fit_values['G1'])
-#V2
-ALL_data_fit_values_v2["V/nT"] =  abs(ALL_data_fit_values_v2['A'])/abs(ALL_data_fit_values_v2['G2'])
-ALL_data_fit_values_v2["SE"] =  abs(ALL_data_fit_values_v2['G2'])-abs(ALL_data_fit_values_v2['G1'])
-#V3
-ALL_data_fit_values_v3["V/nT"] =  abs(ALL_data_fit_values_v3['A'])/abs(ALL_data_fit_values_v3['G2'])
-ALL_data_fit_values_v3["SE"] =  abs(ALL_data_fit_values_v3['G2'])-abs(ALL_data_fit_values_v3['G1'])
-#V4
-ALL_data_fit_values_v4["V/nT"] =  abs(ALL_data_fit_values_v4['A'])/abs(ALL_data_fit_values_v4['G2'])
-ALL_data_fit_values_v4["SE"] =  abs(ALL_data_fit_values_v4['G2'])-abs(ALL_data_fit_values_v4['G1'])
-#V5
+# 04-03-21 MLOOP-166-loop
 ALL_data_fit_values_v5["V/nT"] =  abs(ALL_data_fit_values_v5['A'])/abs(ALL_data_fit_values_v5['G2'])
 ALL_data_fit_values_v5["SE"] =  abs(ALL_data_fit_values_v5['G2'])-abs(ALL_data_fit_values_v5['G1'])
 #V6
@@ -43,17 +24,11 @@ ALL_data_fit_values_v6["V/nT"] =  abs(ALL_data_fit_values_v6['A'])/abs(ALL_data_
 ALL_data_fit_values_v6["SE"] =  abs(ALL_data_fit_values_v6['G2'])-abs(ALL_data_fit_values_v6['G1'])
 
 ## Load data for sliders
-df = ALL_data_fit_values
+df = ALL_data_fit_values_v5
+
 # File names
-Github_urls_v1= pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/Data_pt2/Github_urls_sorted.csv")
-#v2
-Github_urls_v2 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/Version_2_Data_1/Github_urls_sortedV2.csv")
-#v3
-Github_urls_v3 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Github_urls_sortedV3.csv")
-#v4
-Github_urls_v4 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Github_urls_sortedV4.csv")
-#v5
-Github_urls_v5 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/M-LOOP/Github_urls_sortedV5.csv")
+# 04-03-21 MLOOP-166-loop
+Github_urls_v5 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Github_urls_sorted.csv")
 #v6
 Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_Systematic_Testing/main/GA/Github_urls_sortedV6.csv")
 
@@ -108,14 +83,10 @@ app.layout = html.Div(children=[
                         dcc.Dropdown(
                             id='segselect',
                             options=[
-                                {'label': 'V1: Systematic Testing V1', 'value': 'ST1'},
-                                {'label': 'V1: Systematic Testing V2', 'value': 'ST2'},
-                                {'label': 'V1: M-LOOP V1', 'value': 'ML1'},
-                                {'label': 'V1: M-LOOP V2', 'value': 'ML2'},
-                                {'label': 'V2: M-LOOP V1', 'value': 'ML3'},
+                                {'label': 'M-LOOP (166 Loop, 04-03-21)', 'value': 'ML3'},
                                 {'label': 'V2: GA V1', 'value': 'GA1'},
                             ],
-                            value='ST2'
+                            value='ML3'
                         ),     
                         dcc.RadioItems(
                             id='value_dropdown',
@@ -206,18 +177,10 @@ app.layout = html.Div(children=[
 @app.callback(Output('MSE_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3 
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6    
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6 
   A = dcc.Slider(id='MSE-slider',
                  min=df2['MSE'].min(),
                  max=df2['MSE'].max()+(df2['MSE'].max()*0.01),
@@ -236,18 +199,10 @@ def display_click_data(data_version):
 @app.callback(Output('PP_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3 
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4 
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5  
+    df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6 
   A = dcc.Slider(id='PP-slider',
                  min=df2['PP'].min(),
                  max=df2['PP'].max()+(df2['PP'].max()*0.01),
@@ -266,18 +221,10 @@ def display_click_data(data_version):
 @app.callback(Output('vnt_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3  
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4   
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6 
   A = dcc.RangeSlider(id='vnt-range-slider',
                       min=df2['V/nT'].min(),
                       max=df2['V/nT'].max()+(df2['V/nT'].max()*0.01),
@@ -295,18 +242,10 @@ def display_click_data(data_version):
 @app.callback(Output('Temp_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3 
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4 
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5   
+    df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6  
   A = dcc.RangeSlider(id = "temp-range-slider",
                       min=df2['Temp'].min(),
                   max=df2['Temp'].max()+(df2['Temp'].max()*0.01),
@@ -323,18 +262,10 @@ def display_click_data(data_version):
 @app.callback(Output('LP_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3  
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4   
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5     
+    df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6  
   A = dcc.RangeSlider(
                           id='LP-range-slider',
                           min=df2['Laser_Power'].min(),
@@ -353,18 +284,10 @@ def display_click_data(data_version):
 @app.callback(Output('LD_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3 
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4 
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5     
+    df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2  
+    df2 = ALL_data_fit_values_v6 
   A = dcc.RangeSlider(id='LD-range-slider',
                       min=df2['Laser_Detuning'].min(),
                       max=df2['Laser_Detuning'].max()+1,
@@ -392,18 +315,10 @@ def display_click_data(data_version):
               Input('y_value_dropdown', 'value'),
               Input('z_value_dropdown', 'value'))
 def update_figure(TEMP, LP, vnt, LD, PP, MSE,  data_version, x_value, y_value, z_value):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3   
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4   
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5     
+    df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6       
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2     
+    df2 = ALL_data_fit_values_v6     
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -446,30 +361,6 @@ def show_hide_element(visibility_state):
   Output('Markdown_notes', 'children'),
   Input('segselect', 'value'))
 def display_click_data(data_version):
-  if data_version == 'ST1':
-    A = '''
-* **Testing type**: Systematic of all parameter space 
-* **Heater Driver**: Audio Amp, 100kHz, Sine
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
-* **Notes**: Laser power not varying correctly during scans, all values taken at approx ~100uW'''
-  if data_version == 'ML1':  
-    A = '''
-* **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
-* **Notes**: 45 loop (Potential 1.4 phase RF during data collection)'''
-  if data_version == 'ML2':  
-    A = '''
-* **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
-* **Notes**: 400 loop'''
   if data_version == 'ML3':  
     A = '''
 * **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
@@ -478,17 +369,9 @@ def display_click_data(data_version):
 * **Heaters**: 2x4.2 ohm thick film (magnetic)
 * **Cell**: Cs
 * **Notes**: 166 loop'''
-  if data_version == 'GA3':  
-    A = '''
-* **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
-* **Notes**: '''
   else:
     A = '''
-* **Testing type**: Systematic of all parameter space 
+* **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
 * **Heater Driver**: MOSFET, 150kHz, square
 * **Coil Drivers**: DAQ
 * **Heaters**: 2x4.2 ohm thick film (magnetic)
@@ -508,18 +391,10 @@ def display_click_data(data_version):
               Input('value_dropdown', 'value'),
               Input('segselect', 'value'))
 def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3    
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4 
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6      
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2 
+    df2 = ALL_data_fit_values_v6   
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -534,18 +409,10 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
   Input('graph-with-slider', 'clickData'),
   Input('segselect', 'value'))
 def display_click_data(clickData, data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3   
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4  
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5    
+    df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6      
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2 
+    df2 = ALL_data_fit_values_v6  
   if clickData == None:
     x = 14
     line = df2.iloc[x,] 
@@ -620,18 +487,10 @@ def display_value(value):
               Input('value_dropdown', 'value'),
               Input('segselect', 'value'))
 def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
-  if data_version == 'ST1':
-    df2 = ALL_data_fit_values
-  if data_version == 'ML1':
-    df2 = ALL_data_fit_values_v3   
-  if data_version == 'ML2':
-    df2 = ALL_data_fit_values_v4  
   if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5    
+    df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6      
-  if data_version == 'ST2':
-    df2 = ALL_data_fit_values_v2 
+    df2 = ALL_data_fit_values_v6  
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -653,18 +512,10 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
     Input('graph-with-slider', 'clickData'), 
     Input('segselect', 'value'))
 def on_trace_click(clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3   
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4 
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5  
     if data_version == 'GA1':
-        df2 = ALL_data_fit_values_v6          
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
+        df2 = ALL_data_fit_values_v6 
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -693,18 +544,10 @@ def on_trace_click(clickData, data_version):
     Input('graph-with-slider', 'clickData'), 
     Input('segselect', 'value'))
 def on_trace_click(clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3    
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4   
     if data_version == 'ML3':
-        df2 = ALL_data_fit_values_v5     
+        df2 = ALL_data_fit_values_v5  
     if data_version == 'GA1':
-        df2 = ALL_data_fit_values_v6          
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
+        df2 = ALL_data_fit_values_v6 
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -733,24 +576,12 @@ def on_trace_click(clickData, data_version):
     Input('graph-with-slider', 'clickData'), 
     Input('segselect', 'value'))
 def update_figure(clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-        Github_urls = Github_urls_v1
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3 
-        Github_urls = Github_urls_v3 
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4 
-        Github_urls = Github_urls_v4   
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5 
         Github_urls = Github_urls_v5
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
         Github_urls = Github_urls_v6
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
-        Github_urls = Github_urls_v2
     if clickData == None:
         x = 14
         line = df2.iloc[x,] 
@@ -796,24 +627,12 @@ def update_figure(clickData, data_version):
   Input('graph-with-slider', 'clickData'), 
   Input('segselect', 'value'))
 def display_click_data(clickData2, clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-        Github_urls = Github_urls_v1
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3 
-        Github_urls = Github_urls_v3  
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4 
-        Github_urls = Github_urls_v4       
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5 
-        Github_urls = Github_urls_v5  
+        Github_urls = Github_urls_v5
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
-        Github_urls = Github_urls_v6        
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
-        Github_urls = Github_urls_v2
+        Github_urls = Github_urls_v6
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -861,24 +680,12 @@ def display_click_data(clickData2, clickData, data_version):
   Input('graph-with-slider', 'clickData'), 
   Input('segselect', 'value'))
 def display_click_data(clickData2, clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-        Github_urls = Github_urls_v1
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3 
-        Github_urls = Github_urls_v3   
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4 
-        Github_urls = Github_urls_v4   
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5 
-        Github_urls = Github_urls_v5      
+        Github_urls = Github_urls_v5
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
-        Github_urls = Github_urls_v6        
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
-        Github_urls = Github_urls_v2  
+        Github_urls = Github_urls_v6
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -932,24 +739,12 @@ def display_click_data(clickData2, clickData, data_version):
   Input('graph-with-slider', 'clickData'), 
   Input('segselect', 'value'))
 def display_click_data(clickData2, clickData, data_version):
-    if data_version == 'ST1':
-        df2 = ALL_data_fit_values
-        Github_urls = Github_urls_v1
-    if data_version == 'ML1':
-        df2 = ALL_data_fit_values_v3 
-        Github_urls = Github_urls_v3    
-    if data_version == 'ML2':
-        df2 = ALL_data_fit_values_v4 
-        Github_urls = Github_urls_v4     
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5 
-        Github_urls = Github_urls_v5     
+        Github_urls = Github_urls_v5
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
-        Github_urls = Github_urls_v6        
-    if data_version == 'ST2':
-        df2 = ALL_data_fit_values_v2 
-        Github_urls = Github_urls_v2       
+        Github_urls = Github_urls_v6    
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -995,7 +790,6 @@ def display_click_data(clickData2, clickData, data_version):
     fig.update_layout(height=150)
     fig.update_layout(font=dict(size=8)) # Change font size
     return fig
-
 
 if __name__ == '__main__':
     app.run_server()
