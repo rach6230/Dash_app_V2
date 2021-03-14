@@ -14,6 +14,8 @@ tabtitle='SERF: Parameter Space Testing'
 ALL_data_fit_values_v5 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv')
 # 08-03-21 GA-50-sample
 ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21-Full_fit_Data.csv')
+# 12-03-21 MLOOP-500-loop
+ALL_data_fit_values_v7 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21-Full_fit_Data.csv')
 
 
 # Create col of A/C:
@@ -23,6 +25,9 @@ ALL_data_fit_values_v5["SE"] =  abs(ALL_data_fit_values_v5['G2'])-abs(ALL_data_f
 # 08-03-21 GA-50-sample
 ALL_data_fit_values_v6["V/nT"] =  abs(ALL_data_fit_values_v6['A'])/abs(ALL_data_fit_values_v6['G2'])
 ALL_data_fit_values_v6["SE"] =  abs(ALL_data_fit_values_v6['G2'])-abs(ALL_data_fit_values_v6['G1'])
+# 12-03-21 MLOOP-500-loop
+ALL_data_fit_values_v7["V/nT"] =  abs(ALL_data_fit_values_v7['A'])/abs(ALL_data_fit_values_v7['G2'])
+ALL_data_fit_values_v7["SE"] =  abs(ALL_data_fit_values_v7['G2'])-abs(ALL_data_fit_values_v7['G1'])
 
 ## Load data for sliders
 df = ALL_data_fit_values_v5
@@ -32,6 +37,9 @@ df = ALL_data_fit_values_v5
 Github_urls_v5 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Github_urls_sorted.csv")
 # 08-03-21 GA-50-sample
 Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21Github_urls_sorted.csv")
+# 12-03-21 MLOOP-500-loop
+Github_urls_v7 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21_Github_urls_sorted.csv")
+
 
 # Inital data to show (selected point)
 x = 14
@@ -41,13 +49,12 @@ colors = {
     'background': '#f2f2f2',
     'text': '#7FDBFF'
 }
+
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 app.title=tabtitle
-
-
 
 ########### Set up the layout
 app.layout = html.Div(children=[
@@ -85,8 +92,9 @@ app.layout = html.Div(children=[
                             options=[
                                 {'label': 'M-LOOP (166 Loop, 04-03-21)', 'value': 'ML3'},
                                 {'label': 'GA (50 sample, 08-03-21)', 'value': 'GA1'},
+                                {'label': 'GA (500 sample, 12-03-21)', 'value': 'ML4'},                                
                             ],
-                            value='ML3'
+                            value='ML4'
                         ),     
                         dcc.RadioItems(
                             id='value_dropdown',
@@ -181,6 +189,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   A = dcc.Slider(id='MSE-slider',
                  min=df2['MSE'].min(),
                  max=df2['MSE'].max()+(df2['MSE'].max()*0.01),
@@ -203,6 +213,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   A = dcc.Slider(id='PP-slider',
                  min=df2['PP'].min(),
                  max=df2['PP'].max()+(df2['PP'].max()*0.01),
@@ -225,6 +237,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   A = dcc.RangeSlider(id='vnt-range-slider',
                       min=df2['V/nT'].min(),
                       max=df2['V/nT'].max()+(df2['V/nT'].max()*0.01),
@@ -246,6 +260,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   A = dcc.RangeSlider(id = "temp-range-slider",
                       min=df2['Temp'].min(),
                   max=df2['Temp'].max()+(df2['Temp'].max()*0.01),
@@ -265,7 +281,9 @@ def display_click_data(data_version):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6  
+    df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7      
   A = dcc.RangeSlider(
                           id='LP-range-slider',
                           min=df2['Laser_Power'].min(),
@@ -288,6 +306,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   A = dcc.RangeSlider(id='LD-range-slider',
                       min=df2['Laser_Detuning'].min(),
                       max=df2['Laser_Detuning'].max()+1,
@@ -318,7 +338,9 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE,  data_version, x_value, y_value, z
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6     
+    df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -369,6 +391,14 @@ def display_click_data(data_version):
 * **Heaters**: 2x4.2 ohm thick film (magnetic)
 * **Cell**: Cs
 * **Notes**: 166 loop'''
+  if data_version == 'ML4':
+    A = '''
+* **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
+* **Heater Driver**: MOSFET, 150kHz, square
+* **Coil Drivers**: DAQ
+* **Heaters**: 2x4.2 ohm thick film (magnetic)
+* **Cell**: Cs
+* **Notes**: 500 loop'''
   else:
     A = '''
 * **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
@@ -394,7 +424,9 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6   
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -412,7 +444,9 @@ def display_click_data(clickData, data_version):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6  
+    df2 = ALL_data_fit_values_v6 
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   if clickData == None:
     x = 14
     line = df2.iloc[x,] 
@@ -491,6 +525,8 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
     df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7     
   filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
                     (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
@@ -516,6 +552,8 @@ def on_trace_click(clickData, data_version):
         df2 = ALL_data_fit_values_v5  
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6 
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7         
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -547,7 +585,9 @@ def on_trace_click(clickData, data_version):
     if data_version == 'ML3':
         df2 = ALL_data_fit_values_v5  
     if data_version == 'GA1':
-        df2 = ALL_data_fit_values_v6 
+        df2 = ALL_data_fit_values_v6
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7        
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -582,6 +622,9 @@ def update_figure(clickData, data_version):
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
         Github_urls = Github_urls_v6
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7   
+        Github_urls = Github_urls_v7
     if clickData == None:
         x = 14
         line = df2.iloc[x,] 
@@ -633,6 +676,9 @@ def display_click_data(clickData2, clickData, data_version):
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
         Github_urls = Github_urls_v6
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7   
+        Github_urls = Github_urls_v7        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -686,6 +732,9 @@ def display_click_data(clickData2, clickData, data_version):
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
         Github_urls = Github_urls_v6
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7   
+        Github_urls = Github_urls_v7        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -744,7 +793,10 @@ def display_click_data(clickData2, clickData, data_version):
         Github_urls = Github_urls_v5
     if data_version == 'GA1':
         df2 = ALL_data_fit_values_v6    
-        Github_urls = Github_urls_v6    
+        Github_urls = Github_urls_v6 
+    if data_version == 'ML4':
+        df2 = ALL_data_fit_values_v7   
+        Github_urls = Github_urls_v7        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
