@@ -92,7 +92,7 @@ app.layout = html.Div(children=[
                             options=[
                                 {'label': 'M-LOOP (166 Loop, 04-03-21)', 'value': 'ML3'},
                                 {'label': 'GA (50 sample, 08-03-21)', 'value': 'GA1'},
-                                {'label': 'GA (500 sample, 12-03-21)', 'value': 'ML4'},                                
+                                {'label': 'M-LOOP (500 sample, 12-03-21)', 'value': 'ML4'},                                
                             ],
                             value='ML4'
                         ),     
