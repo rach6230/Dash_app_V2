@@ -197,7 +197,7 @@ def display_click_data(data_version):
                  step=(df2['MSE'].max()+df2['MSE'].min())/100000,
                  value=df2['MSE'].max()+(df2['MSE'].max()*0.01),
                  marks={
-                     0: {'label': '0 °C', 'style': {'color': '#77b0b1'}},
+                     df2['MSE'].min(): {'label': 'min'},
                      df2['MSE'].max()*0.25: {'label': '25 %'},
                      df2['MSE'].max()*0.5: {'label': '50 %'},
                      df2['MSE'].max()*0.75: {'label': '75 %'},
@@ -290,12 +290,14 @@ def display_click_data(data_version):
                           max=df2['Laser_Power'].max()+1,
                           step=1/100000,
                           value=[df2['Laser_Power'].min(), df2['Laser_Power'].max()+1],
-                          marks={70: {'label': '70', 'style': {'color': '#77b0b1'}},
-                                 140: {'label': '140'},
-                                 210: {'label': '210'},
-                                 280: {'label': '280'},
-                                 350: {'label': '350', 'style': {'color': '#f50'}}
+                          marks={200: {'label': '200', 'style': {'color': '#77b0b1'}},
+                                 300: {'label': '300'},
+                                 400: {'label': '400'},
+                                 500: {'label': '500'},
+                                 600: {'label': '600'},
+                                 700: {'label': '700', 'style': {'color': '#f50'}}
                                 }
+                  
                         )
   return A
 
@@ -309,16 +311,16 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7     
   A = dcc.RangeSlider(id='LD-range-slider',
-                      min=df2['Laser_Detuning'].min(),
+                      min=-20,
+                      #min=df2['Laser_Detuning'].min(),
                       max=df2['Laser_Detuning'].max()+1,
                       step=1/100000,
                       value=[df2['Laser_Detuning'].min(), df2['Laser_Detuning'].max()+1],
                       marks={
-                          -35: {'label': '-35', 'style': {'color': '#77b0b1'}},
-                          -22.5: {'label': '-22.5'},
+                          -20: {'label': '-20', 'style': {'color': '#77b0b1'}},
                           -10: {'label': '-10'},
-                          2.5: {'label': '2.5'},
-                          15: {'label': '15', 'style': {'color': '#f50'}}
+                          0: {'label': '0'},
+                          10: {'label': '10', 'style': {'color': '#f50'}}
                       }
                      )
   return A
