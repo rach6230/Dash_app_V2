@@ -40,9 +40,15 @@ Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_ap
 # 12-03-21 MLOOP-500-loop
 Github_urls_v7 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21_Github_urls_sorted.csv")
 
-
 # Inital data to show (selected point)
 x = 14
+
+## Version details
+Version = '''
+* **Cell**: Cs
+* **Coil Drivers**: DAQ
+* **Heater Driver**: MOSFET, 150kHz, square
+* **Heaters**: 1 x 8 Ohm (non-magnetic)'''
 
 ## Colour values
 colors = {
@@ -80,6 +86,8 @@ app.layout = html.Div(children=[
                         html.Div(id='MSE_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
                         html.Div(id = 'MSE_slider_container'), 
                         html.Br(), #new line
+                        html.P('Experiment Version Details:'),
+                        dcc.Markdown(Version, style={'fontSize': 12}),   
                         html.P('Data Set Details:'),
                         dcc.Markdown(id='Markdown_notes', style={'fontSize': 12}),
                       ]
@@ -387,29 +395,18 @@ def show_hide_element(visibility_state):
 def display_click_data(data_version):
   if data_version == 'ML3':  
     A = '''
-* **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
+* **Testing type**: M-LOOP for parameter space (Temp: 60-125C, Laser power: 150-800 μW, Laser detuning: -20 to 10 GHz)
 * **Notes**: 166 loop'''
   if data_version == 'ML4':
     A = '''
-* **Testing type**: M-LOOP for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
+* **Testing type**: M-LOOP for parameter space (Temp: 70-125C, Laser power: 150-700 μW, Laser detuning: -20 to 10 GHz)
 * **Notes**: 500 loop'''
   else:
     A = '''
 * **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
-* **Heater Driver**: MOSFET, 150kHz, square
-* **Coil Drivers**: DAQ
-* **Heaters**: 2x4.2 ohm thick film (magnetic)
-* **Cell**: Cs
-* **Notes**: '''
+* **Notes**: 50 Samples (10 population for 5 loops) '''
   return A
+
 
 ## Callback for selected data text ################
 ## Call back for text under graph
