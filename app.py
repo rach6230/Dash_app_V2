@@ -430,7 +430,7 @@ def display_click_data(data_version):
     A = '''
 * **Testing type**: Genetic Algorithm for parameter space (Temp: 70-125C, Laser power: 150-700 μW, Laser detuning: -20 to 10 GHz)
 * **Notes**: 200 Samples (10 population for 20 loops)'''    
-  else:
+  if data_version == 'GA1':
     A = '''
 * **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
 * **Notes**: 50 Samples (10 population for 5 loops) '''
