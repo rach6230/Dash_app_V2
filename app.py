@@ -71,6 +71,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 app.title=tabtitle
 
+
 ########### Set up the layout
 app.layout = html.Div(children=[
   html.Div(className='row',  # Define the row elemen
@@ -85,20 +86,22 @@ app.layout = html.Div(children=[
                         html.Div(id='LP_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
                         html.Div(id = 'LP_slider_container'),
                         html.Div(id='LD_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
-                        html.Div(id = 'LD_slider_container'),
-                        html.Div(id='vnt_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
-                        html.Div(id = 'vnt_slider_container'),  
+                        html.Div(id = 'LD_slider_container'), 
+                        html.Div([html.Div(id="V/nT_range_output"),
+                                  html.Div(id = 'V/nT_range_container')]),                           
                         html.Br(), #new line
-                        html.P('Error:'),
-                        html.Div(id='PP_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
-                        html.Div(id = 'PP_slider_container'),
-                        html.Div(id='MSE_slider-drag-output', style={'margin-top': 20,'fontSize': 12}),
-                        html.Div(id = 'MSE_slider_container'), 
+                        html.P('Fit filters:'), 
+                        html.Div([html.Div(id="A_range_output"),
+                                  html.Div(id = 'A_range_container')]),                           
+                        html.Div([html.Div(id="G1_range_output"),
+                                  html.Div(id = 'G1_range_container')]),  
+                        html.Div([html.Div(id="G2_range_output"),
+                                  html.Div(id = 'G2_range_container')]),   
+                        html.Div([html.Div(id="G1_error_range_output"),
+                                  html.Div(id = 'G1_error_range_container')]),  
+                        html.Div([html.Div(id="G2_error_range_output"),
+                                  html.Div(id = 'G2_error_range_container')]),                                  
                         html.Br(), #new line
-                        html.P('Experiment Version Details:'),
-                        dcc.Markdown(Version, style={'fontSize': 12}),  
-                        html.P('Data Set Details:'),
-                        dcc.Markdown(id='Markdown_notes', style={'fontSize': 12}),
                       ]
                      ),  # Define the 1st column
              html.Div(className='five columns div-for-charts',
@@ -136,6 +139,11 @@ app.layout = html.Div(children=[
                         dash_table.DataTable(id='my-table2',
                                              style_cell={'textAlign': 'left', 'font_size': '10px'},
                                              columns=[{"name": i, "id": i} for i in df.columns[7:14]]),  
+                        html.Br(), #new line  
+                        html.P('Experiment Version Details:'),
+                        dcc.Markdown(Version, style={'fontSize': 12}),  
+                        html.P('Data Set Details:'),
+                        dcc.Markdown(id='Markdown_notes', style={'fontSize': 12}),  
                       ]
                      ),  # Define the 3rd column
                html.Div(className='four columns div-for-charts',
@@ -200,58 +208,249 @@ app.layout = html.Div(children=[
 )
 
 ############ Callbacks for slider containers #############################
-@app.callback(Output('MSE_slider_container', 'children'),
+# A
+@app.callback(Output('A_range_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6 
-  if data_version == 'ML4':
-    df2 = ALL_data_fit_values_v7 
-  if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8       
-  A = dcc.Slider(id='MSE-slider',
-                 min=df2['MSE'].min(),
-                 max=df2['MSE'].max()+(df2['MSE'].max()*0.01),
-                 step=(df2['MSE'].max()+df2['MSE'].min())/100000,
-                 value=df2['MSE'].max()+(df2['MSE'].max()*0.01),
-                 marks={
-                     df2['MSE'].min(): {'label': 'min'},
-                     df2['MSE'].max()*0.25: {'label': '25 %'},
-                     df2['MSE'].max()*0.5: {'label': '50 %'},
-                     df2['MSE'].max()*0.75: {'label': '75 %'},
-                     df2['MSE'].max(): {'label': '100%', 'style': {'color': '#f50'}}
-                 }
-                )
-  return A
-
-@app.callback(Output('PP_slider_container', 'children'),
-              Input('segselect', 'value'))
-def display_click_data(data_version):
-  if data_version == 'ML3':
-    df2 = ALL_data_fit_values_v5    
-  if data_version == 'GA1':
-    df2 = ALL_data_fit_values_v6 
+    df2 = ALL_data_fit_values_v6  
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
-  A = dcc.Slider(id='PP-slider',
-                 min=df2['PP'].min(),
-                 max=df2['PP'].max()+(df2['PP'].max()*0.01),
-                 step=(df2['PP'].max()+df2['PP'].min())/100000,
-                 value=df2['PP'].max()+(df2['PP'].max()*0.01),
-                 marks={df2['PP'].min(): {'label': '0 %', 'style': {'color': '#77b0b1'}},
-                        df2['PP'].max()*0.25: {'label': '25 %'},
-                        df2['PP'].max()*0.5: {'label': '50 %'},
-                        df2['PP'].max()*0.75: {'label': '75 %'},
-                        df2['PP'].max(): {'label': '100%', 'style': {'color': '#f50'}}
-                       }
-                )
-  return A
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="A_min", type="number",debounce=True, value = df2['A'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="A_max", type="number",debounce=True, value = df2['A'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
 
+# displaying values of A
+@app.callback(
+    Output("A_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("A_min", "value"),
+    Input("A_max", "value"))
+def number_render(data_version, A_min, A_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full A range: {} to {}".format(round(df2['A'].min(),3), round(df2['A'].max(), 3))
+  B = "Selected A range: {} to {}".format(round(A_min, 3), round(A_max, 3))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
 
+# V/nT
+@app.callback(Output('V/nT_range_container', 'children'),
+              Input('segselect', 'value'))
+def display_click_data(data_version):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="V/nT_min", type="number",debounce=True, value = df2['V/nT'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="V/nT_max", type="number",debounce=True, value = df2['V/nT'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
+
+# displaying values of V/nT
+@app.callback(
+    Output("V/nT_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("V/nT_min", "value"),
+    Input("V/nT_max", "value"))
+def number_render(data_version, VnT_min, VnT_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full V/nT range: {} to {}".format(round(df2['V/nT'].min(),3), round(df2['V/nT'].max(), 3))
+  B = "Selected V/nT range: {} to {}".format(round(VnT_min, 3), round(VnT_max, 3))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
+
+## G1
+
+@app.callback(Output('G1_range_container', 'children'),
+              Input('segselect', 'value'))
+def display_click_data(data_version):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="G1_min", type="number",debounce=True, value = df2['G1'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="G1_max", type="number",debounce=True, value = df2['G1'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
+
+# displaying values of G1
+@app.callback(
+    Output("G1_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("G1_min", "value"),
+    Input("G1_max", "value"))
+def number_render(data_version, G1_min, G1_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full G1 range: {} to {}".format(round(df2['G1'].min(),5), round(df2['G1'].max(),5))
+  B = "Selected G1 range: {} to {}".format(round(G1_min, 5), round(G1_max, 5))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
+
+# G2
+@app.callback(Output('G2_range_container', 'children'),
+              Input('segselect', 'value'))
+def display_click_data(data_version):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="G2_min", type="number",debounce=True, value = df2['G2'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="G2_max", type="number",debounce=True, value = df2['G2'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
+
+# displaying values of G2
+@app.callback(
+    Output("G2_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("G2_min", "value"),
+    Input("G2_max", "value"))
+def number_render(data_version, G2_min, G2_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full G2 range: {} to {}".format(round(df2['G2'].min(),5), round(df2['G2'].max(),5))
+  B = "Selected G2 range: {} to {}".format(round(G2_min, 5), round(G2_max, 5))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
+
+## G1 error_
+
+@app.callback(Output('G1_error_range_container', 'children'),
+              Input('segselect', 'value'))
+def display_click_data(data_version):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="G1_error_min", type="number",debounce=True, value = df2['Error_G1'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="G1_error_max", type="number",debounce=True, value = df2['Error_G1'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
+
+# displaying values of G1 error
+@app.callback(
+    Output("G1_error_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("G1_error_min", "value"),
+    Input("G1_error_max", "value"))
+def number_render(data_version, G1_error_min, G1_error_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full G1 error range: {} to {}".format(round(df2['Error_G1'].min(),5), round(df2['Error_G1'].max(),5))
+  B = "Selected G1 error range: {} to {}".format(round(G1_error_min, 5), round(G1_error_max, 5))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
+
+# G2 error
+@app.callback(Output('G2_error_range_container', 'children'),
+              Input('segselect', 'value'))
+def display_click_data(data_version):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = dcc.Input(id="G2_error_min", type="number",debounce=True, value = df2['Error_G2'].min(), style={'width':'50%', 'fontSize': 12})
+  B = dcc.Input(id="G2_error_max", type="number",debounce=True, value = df2['Error_G2'].max(), style={'width':'50%', 'fontSize': 12})
+  C = html.Div([A,
+                B])  
+  return C
+
+# displaying values of G2 error
+@app.callback(
+    Output("G2_error_range_output", "children"),
+    Input('segselect', 'value'),
+    Input("G2_error_min", "value"),
+    Input("G2_error_max", "value"))
+def number_render(data_version, G2_error_min, G2_error_max):
+  if data_version == 'ML3':
+    df2 = ALL_data_fit_values_v5    
+  if data_version == 'GA1':
+    df2 = ALL_data_fit_values_v6  
+  if data_version == 'ML4':
+    df2 = ALL_data_fit_values_v7   
+  if data_version == 'GA2':
+    df2 = ALL_data_fit_values_v8  
+  A = "Full G2 range: {} to {}".format(round(df2['Error_G2'].min(),5), round(df2['Error_G2'].max(),5))
+  B = "Selected G2 range: {} to {}".format(round(G2_error_min, 5), round(G2_error_max, 5))
+  C = html.Div([
+                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+                html.Div(B, style={'fontSize': 12})])
+  return C
+
+############ Callbacks for slider containers #############################
 @app.callback(Output('vnt_slider_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
@@ -358,15 +557,25 @@ def display_click_data(data_version):
 @app.callback(Output('custom_plot', 'figure'),
               Input('temp-range-slider', 'value'),
               Input('LP-range-slider', 'value'),
-              Input('vnt-range-slider', 'value'),
+              Input('V/nT_min', 'value'),
+              Input('V/nT_max', 'value'),
               Input('LD-range-slider', 'value'),
-              Input('PP-slider', 'value'),
-              Input('MSE-slider', 'value'),
               Input('segselect', 'value'),
               Input('x_value_dropdown', 'value'),
               Input('y_value_dropdown', 'value'),
-              Input('z_value_dropdown', 'value'))
-def update_figure(TEMP, LP, vnt, LD, PP, MSE,  data_version, x_value, y_value, z_value):
+              Input('z_value_dropdown', 'value'),
+              Input('G1_min', 'value'),
+              Input('G1_max', 'value'),
+              Input('G2_min', 'value'),
+              Input('G2_max', 'value'),
+              Input('G1_error_min', 'value'),
+              Input('G1_error_max', 'value'),
+              Input('G2_error_min', 'value'),
+              Input('G2_error_max', 'value'),
+              Input('A_min', 'value'),
+              Input('A_max', 'value'))
+def update_figure(TEMP, LP, VnT_min, VnT_max, LD, data_version, x_value, y_value, z_value, G1_min, G1_max,
+                  G2_min, G2_max, G1_error_min, G1_error_max, G2_error_min, G2_error_max, A_min, A_max):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5    
   if data_version == 'GA1':
@@ -375,10 +584,14 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE,  data_version, x_value, y_value, z
     df2 = ALL_data_fit_values_v7  
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8           
-  filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
-                    (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
+  filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
-                    (df2['V/nT']<= vnt[1])&(df2['V/nT']>= vnt[0])&
+                    (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
+                    (df2['A']<= A_max)&(df2['A']>= A_min)&                    
+                    (df2['G1']<= G1_max)&(df2['G1']>= G1_min)&
+                    (df2['G2']<= G2_max)&(df2['G2']>= G2_min)&
+                    (df2['Error_G1']<= G1_error_max)&(df2['Error_G1']>= G1_error_min)&
+                    (df2['Error_G2']<= G2_error_max)&(df2['Error_G2']>= G2_error_min)& 
                     (df2['Laser_Detuning']<= LD[1])&(df2['Laser_Detuning']>= LD[0])]
   filtered_df.columns = ['G1', 'G2', 'C (nT)', 'A (V)', 'Bx (nT)', 'By (nT)', 'Bz (nT)', 'Error_G1', 'Error_G2',
                          'Error_C', 'Error_A', 'Error_Bx', 'Error_By', 'Error_Bz', 'MSE',
@@ -441,13 +654,23 @@ def display_click_data(data_version):
 @app.callback(Output('totalpoints', 'children'),
               Input('temp-range-slider', 'value'),
               Input('LP-range-slider', 'value'),
-              Input('vnt-range-slider', 'value'),
+              Input('V/nT_min', 'value'),
+              Input('V/nT_max', 'value'), 
               Input('LD-range-slider', 'value'),
-              Input('PP-slider', 'value'),
-              Input('MSE-slider', 'value'),
               Input('value_dropdown', 'value'),
-              Input('segselect', 'value'))
-def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
+              Input('segselect', 'value'),
+              Input('G1_min', 'value'),
+              Input('G1_max', 'value'),
+              Input('G2_min', 'value'),
+              Input('G2_max', 'value'),
+              Input('G1_error_min', 'value'),
+              Input('G1_error_max', 'value'),
+              Input('G2_error_min', 'value'),
+              Input('G2_error_max', 'value'),
+              Input('A_min', 'value'),
+              Input('A_max', 'value'))
+def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_max,
+                  G2_min, G2_max, G1_error_min, G1_error_max, G2_error_min, G2_error_max, A_min, A_max):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
@@ -456,10 +679,14 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
     df2 = ALL_data_fit_values_v7     
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8           
-  filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
-                    (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
+  filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
-                    (df2['V/nT']<= vnt[1])&(df2['V/nT']>= vnt[0])&
+                    (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
+                    (df2['A']<= A_max)&(df2['A']>= A_min)&                    
+                    (df2['G1']<= G1_max)&(df2['G1']>= G1_min)&
+                    (df2['G2']<= G2_max)&(df2['G2']>= G2_min)&
+                    (df2['Error_G1']<= G1_error_max)&(df2['Error_G1']>= G1_error_min)&
+                    (df2['Error_G2']<= G2_error_max)&(df2['Error_G2']>= G2_error_min)& 
                     (df2['Laser_Detuning']<= LD[1])&(df2['Laser_Detuning']>= LD[0])]
   length = len(filtered_df['PP'])
   return 'Total points =  {}'.format(length)
@@ -528,30 +755,29 @@ def display_value(value):
   high = value[1]
   return 'V/nt = {} to {}'.format(low, high)
 
-## Call back for PP slider indicator
-@app.callback(Output('PP_slider-drag-output', 'children'),
-              [Input('PP-slider', 'value')])
-def display_value(value):
-    return 'PP Value = {}'.format(value)
-
-## Call back for MSE slider indicator
-@app.callback(Output('MSE_slider-drag-output', 'children'),
-              [Input('MSE-slider', 'value')])
-def display_value(value):
-    return 'MSE Value = {}'.format(value)
 
 ############### Call back for graphs #################################
 ## Call back for updating the 3D graph
 @app.callback(Output('graph-with-slider', 'figure'),
               Input('temp-range-slider', 'value'),
               Input('LP-range-slider', 'value'),
-              Input('vnt-range-slider', 'value'),
+              Input('V/nT_min', 'value'),
+              Input('V/nT_max', 'value'),              
               Input('LD-range-slider', 'value'),
-              Input('PP-slider', 'value'),
-              Input('MSE-slider', 'value'),
               Input('value_dropdown', 'value'),
-              Input('segselect', 'value'))
-def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
+              Input('segselect', 'value'),
+              Input('G1_min', 'value'),
+              Input('G1_max', 'value'),
+              Input('G2_min', 'value'),
+              Input('G2_max', 'value'),
+              Input('G1_error_min', 'value'),
+              Input('G1_error_max', 'value'),
+              Input('G2_error_min', 'value'),
+              Input('G2_error_max', 'value'),
+              Input('A_min', 'value'),
+              Input('A_max', 'value'))
+def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_max,
+                  G2_min, G2_max, G1_error_min, G1_error_max, G2_error_min, G2_error_max, A_min, A_max):
   if data_version == 'ML3':
     df2 = ALL_data_fit_values_v5   
   if data_version == 'GA1':
@@ -560,10 +786,14 @@ def update_figure(TEMP, LP, vnt, LD, PP, MSE, col, data_version):
     df2 = ALL_data_fit_values_v7  
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8           
-  filtered_df = df2[(df2['PP']< PP)&(df2['MSE']< MSE)&
-                    (df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
+  filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
-                    (df2['V/nT']<= vnt[1])&(df2['V/nT']>= vnt[0])&
+                    (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
+                    (df2['A']<= A_max)&(df2['A']>= A_min)&                    
+                    (df2['G1']<= G1_max)&(df2['G1']>= G1_min)&
+                    (df2['G2']<= G2_max)&(df2['G2']>= G2_min)&
+                    (df2['Error_G1']<= G1_error_max)&(df2['Error_G1']>= G1_error_min)&
+                    (df2['Error_G2']<= G2_error_max)&(df2['Error_G2']>= G2_error_min)&                    
                     (df2['Laser_Detuning']<= LD[1])&(df2['Laser_Detuning']>= LD[0])]
   fig = px.scatter_3d(filtered_df, y='Temp', z='Laser_Detuning', x='Laser_Power', color=col)
   fig.update_layout(margin={'l': 0, 'b': 0, 't': 10, 'r': 0}, hovermode='closest')
@@ -891,5 +1121,6 @@ def display_click_data(clickData2, clickData, data_version):
     fig.update_layout(height=150)
     fig.update_layout(font=dict(size=8)) # Change font size
     return fig
+
 if __name__ == '__main__':
     app.run_server()
