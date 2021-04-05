@@ -18,7 +18,8 @@ ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230
 ALL_data_fit_values_v7 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21-Full_fit_Data.csv')
 # 14-03-21GA 200-loop
 ALL_data_fit_values_v8 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21-Full_fit_Data.csv')
-
+# 15-03-21 Gradient 189 sample
+ALL_data_fit_values_v9 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21-Full_fit_Data.csv')
 
 
 # Create col of A/C:
@@ -34,6 +35,9 @@ ALL_data_fit_values_v7["SE"] =  abs(ALL_data_fit_values_v7['G2'])-abs(ALL_data_f
 # 14-03-21GA 200-loop
 ALL_data_fit_values_v8["V/nT"] =  abs(ALL_data_fit_values_v8['A'])/abs(ALL_data_fit_values_v8['G2'])
 ALL_data_fit_values_v8["SE"] =  abs(ALL_data_fit_values_v8['G2'])-abs(ALL_data_fit_values_v8['G1'])
+# 15-03-21 Gradient 189 sample
+ALL_data_fit_values_v9["V/nT"] =  abs(ALL_data_fit_values_v9['A'])/abs(ALL_data_fit_values_v9['G2'])
+ALL_data_fit_values_v9["SE"] =  abs(ALL_data_fit_values_v9['G2'])-abs(ALL_data_fit_values_v9['G1'])
 
 ## Load data for sliders
 df = ALL_data_fit_values_v5
@@ -47,6 +51,9 @@ Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_ap
 Github_urls_v7 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21_Github_urls_sorted.csv")
 # 14-03-21GA 200-loop
 Github_urls_v8 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21_Github_urls_sorted.csv")
+# 15-03-21 Gradient 189 sample
+Github_urls_v9 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21_Github_urls_sorted.csv")
+
 
 # Inital data to show (selected point)
 x = 14
@@ -113,7 +120,8 @@ app.layout = html.Div(children=[
                                 {'label': 'M-LOOP (166 Loop, 04-03-21)', 'value': 'ML3'},
                                 {'label': 'GA (50 sample, 08-03-21)', 'value': 'GA1'},
                                 {'label': 'M-LOOP (500 sample, 12-03-21)', 'value': 'ML4'},
-                                {'label': 'GA (200 sample, 14-03-21)', 'value': 'GA2'},                                
+                                {'label': 'GA (200 sample, 14-03-21)', 'value': 'GA2'},  
+                                {'label': 'Gradient (189 sample, 15-03-21)', 'value': 'Grad1'},  
                             ],
                             value='ML4'
                         ),     
@@ -220,6 +228,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9      
   A = dcc.Input(id="A_min", type="number",debounce=True, value = df2['A'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="A_max", type="number",debounce=True, value = df2['A'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -241,6 +251,8 @@ def number_render(data_version, A_min, A_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full A range: {} to {}".format(round(df2['A'].min(),3), round(df2['A'].max(), 3))
   B = "Selected A range: {} to {}".format(round(A_min, 3), round(A_max, 3))
   C = html.Div([
@@ -260,6 +272,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.Input(id="V/nT_min", type="number",debounce=True, value = df2['V/nT'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="V/nT_max", type="number",debounce=True, value = df2['V/nT'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -281,6 +295,8 @@ def number_render(data_version, VnT_min, VnT_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full V/nT range: {} to {}".format(round(df2['V/nT'].min(),3), round(df2['V/nT'].max(), 3))
   B = "Selected V/nT range: {} to {}".format(round(VnT_min, 3), round(VnT_max, 3))
   C = html.Div([
@@ -300,7 +316,9 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8  
+    df2 = ALL_data_fit_values_v8 
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.Input(id="G1_min", type="number",debounce=True, value = df2['G1'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G1_max", type="number",debounce=True, value = df2['G1'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -322,6 +340,8 @@ def number_render(data_version, G1_min, G1_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full G1 range: {} to {}".format(round(df2['G1'].min(),5), round(df2['G1'].max(),5))
   B = "Selected G1 range: {} to {}".format(round(G1_min, 5), round(G1_max, 5))
   C = html.Div([
@@ -341,6 +361,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.Input(id="G2_min", type="number",debounce=True, value = df2['G2'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G2_max", type="number",debounce=True, value = df2['G2'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -362,6 +384,8 @@ def number_render(data_version, G2_min, G2_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full G2 range: {} to {}".format(round(df2['G2'].min(),5), round(df2['G2'].max(),5))
   B = "Selected G2 range: {} to {}".format(round(G2_min, 5), round(G2_max, 5))
   C = html.Div([
@@ -382,6 +406,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.Input(id="G1_error_min", type="number",debounce=True, value = df2['Error_G1'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G1_error_max", type="number",debounce=True, value = df2['Error_G1'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -403,6 +429,8 @@ def number_render(data_version, G1_error_min, G1_error_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full G1 error range: {} to {}".format(round(df2['Error_G1'].min(),5), round(df2['Error_G1'].max(),5))
   B = "Selected G1 error range: {} to {}".format(round(G1_error_min, 5), round(G1_error_max, 5))
   C = html.Div([
@@ -422,6 +450,8 @@ def display_click_data(data_version):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.Input(id="G2_error_min", type="number",debounce=True, value = df2['Error_G2'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G2_error_max", type="number",debounce=True, value = df2['Error_G2'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -443,6 +473,8 @@ def number_render(data_version, G2_error_min, G2_error_max):
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
     df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = "Full G2 range: {} to {}".format(round(df2['Error_G2'].min(),5), round(df2['Error_G2'].max(),5))
   B = "Selected G2 range: {} to {}".format(round(G2_error_min, 5), round(G2_error_max, 5))
   C = html.Div([
@@ -461,7 +493,9 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7    
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.RangeSlider(id='vnt-range-slider',
                       min=df2['V/nT'].min(),
                       max=df2['V/nT'].max()+(df2['V/nT'].max()*0.01),
@@ -486,7 +520,9 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7   
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.RangeSlider(id = "temp-range-slider",
                       min=df2['Temp'].min(),
                   max=df2['Temp'].max()+(df2['Temp'].max()*0.01),
@@ -510,7 +546,9 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7    
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.RangeSlider(
                           id='LP-range-slider',
                           min=df2['Laser_Power'].min(),
@@ -538,7 +576,9 @@ def display_click_data(data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7    
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   A = dcc.RangeSlider(id='LD-range-slider',
                       min=-20,
                       #min=df2['Laser_Detuning'].min(),
@@ -583,7 +623,9 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, data_version, x_value, y_value
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7  
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
                     (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
@@ -647,6 +689,10 @@ def display_click_data(data_version):
     A = '''
 * **Testing type**: Genetic Algorithm for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
 * **Notes**: 50 Samples (10 population for 5 loops) '''
+  if data_version == 'Grad1':
+    A = '''
+* **Testing type**: Gradient search for parameter space (Temp: 100-130C, Laser power: 350-800 μW, Laser detuning: 0-10 GHz)
+* **Notes**: 20 resolution for 3 axis * 3 loops '''    
   return A
 
 ## Callback for selected data text ################
@@ -678,7 +724,9 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7     
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8  
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
                     (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
@@ -704,7 +752,9 @@ def display_click_data(clickData, data_version):
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7    
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   if clickData == None:
     x = 14
     line = df2.iloc[x,] 
@@ -785,7 +835,9 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
   if data_version == 'ML4':
     df2 = ALL_data_fit_values_v7  
   if data_version == 'GA2':
-    df2 = ALL_data_fit_values_v8           
+    df2 = ALL_data_fit_values_v8    
+  if data_version == 'Grad1':
+    df2 = ALL_data_fit_values_v9    
   filtered_df = df2[(df2['Temp']<= TEMP[1])&(df2['Temp']>= TEMP[0])&
                     (df2['Laser_Power']<= LP[1])&(df2['Laser_Power']>= LP[0])&
                     (df2['V/nT']<=VnT_max)&(df2['V/nT']>= VnT_min)&
@@ -818,7 +870,9 @@ def on_trace_click(clickData, data_version):
     if data_version == 'ML4':
         df2 = ALL_data_fit_values_v7      
     if data_version == 'GA2':
-        df2 = ALL_data_fit_values_v8         
+        df2 = ALL_data_fit_values_v8 
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9         
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -854,7 +908,9 @@ def on_trace_click(clickData, data_version):
     if data_version == 'ML4':
         df2 = ALL_data_fit_values_v7   
     if data_version == 'GA2':
-        df2 = ALL_data_fit_values_v8          
+        df2 = ALL_data_fit_values_v8     
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9        
     if clickData== None:
         x = 14
         line = df2.iloc[x,] 
@@ -895,6 +951,9 @@ def update_figure(clickData, data_version):
     if data_version == 'GA2':
         df2 = ALL_data_fit_values_v8      
         Github_urls = Github_urls_v8
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9        
+        Github_urls = Github_urls_v9        
     if clickData == None:
         x = 14
         line = df2.iloc[x,] 
@@ -951,7 +1010,10 @@ def display_click_data(clickData2, clickData, data_version):
         Github_urls = Github_urls_v7  
     if data_version == 'GA2':
         df2 = ALL_data_fit_values_v8      
-        Github_urls = Github_urls_v8        
+        Github_urls = Github_urls_v8   
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9        
+        Github_urls = Github_urls_v9        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -1010,7 +1072,10 @@ def display_click_data(clickData2, clickData, data_version):
         Github_urls = Github_urls_v7   
     if data_version == 'GA2':
         df2 = ALL_data_fit_values_v8      
-        Github_urls = Github_urls_v8        
+        Github_urls = Github_urls_v8   
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9        
+        Github_urls = Github_urls_v9        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
@@ -1075,7 +1140,10 @@ def display_click_data(clickData2, clickData, data_version):
         Github_urls = Github_urls_v7    
     if data_version == 'GA2':
         df2 = ALL_data_fit_values_v8      
-        Github_urls = Github_urls_v8        
+        Github_urls = Github_urls_v8    
+    if data_version == 'Grad1':
+        df2 = ALL_data_fit_values_v9        
+        Github_urls = Github_urls_v9        
     if clickData == None:
         x = 14
         line = df2.iloc[x,]
