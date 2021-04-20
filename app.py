@@ -100,7 +100,6 @@ Version = '''
 * **Heater Driver**: MOSFET, 150kHz, square
 * **Heaters**: 1 x 8 Ohm (non-magnetic)'''
 
-
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -1345,7 +1344,6 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(height=150)
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig  
-    
 
 if __name__ == '__main__':
     app.run_server()
