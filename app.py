@@ -24,8 +24,8 @@ ALL_data_fit_values_v9 = pd.read_csv('https://raw.githubusercontent.com/rach6230
 ALL_data_fit_values_v10 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21-Full_fit_Data.csv')
 ## 2D 1D 
 ALL_data_fit_values_v11 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21-Full_fit_Data.csv')
-#ALL_data_fit_values_v12 = pd.read_csv('C:/Users/rache/OneDrive/Desktop/Optimisation/df_ga.csv')
-#ALL_data_fit_values_v13 = pd.read_csv('C:/Users/rache/OneDrive/Desktop/Optimisation/df_ga_20_04_2021.csv')
+ALL_data_fit_values_v12 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21-Full_fit_Data.csv')
+ALL_data_fit_values_v13 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21-Full_fit_Data.csv')
 
 # Create col of A/C:
 # 04-03-21 MLOOP-166-loop
@@ -48,16 +48,13 @@ ALL_data_fit_values_v10["V/nT"] =  abs(ALL_data_fit_values_v10['A'])/abs(ALL_dat
 ALL_data_fit_values_v10["SE"] =  abs(ALL_data_fit_values_v10['G2'])-abs(ALL_data_fit_values_v10['G1'])
 # 04-02-21 Systematic 512 sample
 ALL_data_fit_values_v11["V/nT"] =  abs(ALL_data_fit_values_v11['A(1D)'])/abs(ALL_data_fit_values_v11['G(1D)'])
-#ALL_data_fit_values_v12["V/nT"] =  abs(ALL_data_fit_values_v12['A(1D)'])/abs(ALL_data_fit_values_v12['G(1D)'])
-#ALL_data_fit_values_v13["V/nT"] =  abs(ALL_data_fit_values_v13['A(1D)'])/abs(ALL_data_fit_values_v13['G(1D)'])
+ALL_data_fit_values_v12["V/nT"] =  abs(ALL_data_fit_values_v12['A(1D)'])/abs(ALL_data_fit_values_v12['G(1D)'])
+ALL_data_fit_values_v13["V/nT"] =  abs(ALL_data_fit_values_v13['A(1D)'])/abs(ALL_data_fit_values_v13['G(1D)'])
 
 # list of all data frames
-#all_df=[ALL_data_fit_values_v5,ALL_data_fit_values_v6,ALL_data_fit_values_v7, ALL_data_fit_values_v8,
-#        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11, ALL_data_fit_values_v12, ALL_data_fit_values_v13]    
 all_df=[ALL_data_fit_values_v5,ALL_data_fit_values_v6,ALL_data_fit_values_v7, ALL_data_fit_values_v8,
-        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11]    
-
-
+        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11, ALL_data_fit_values_v12, ALL_data_fit_values_v13]    
+  
 
 ## Load data for sliders/ tables
 df = ALL_data_fit_values_v5
@@ -78,10 +75,13 @@ Github_urls_v9 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_ap
 Github_urls_v10 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21_Github_urls_sorted.csv")
 ## 2D
 Github_urls_v11 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21_Github_urls_sorted.csv")
+Github_urls_v12 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21_Github_urls_sorted.csv")
+Github_urls_v13 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21_Github_urls_sorted.csv")
 
     
 # list of all data frames
-all_git_df=[Github_urls_v5, Github_urls_v6, Github_urls_v7, Github_urls_v8,Github_urls_v9, Github_urls_v10, Github_urls_v11 ]    
+all_git_df=[Github_urls_v5, Github_urls_v6, Github_urls_v7, Github_urls_v8,Github_urls_v9,
+            Github_urls_v10, Github_urls_v11, Github_urls_v12, Github_urls_v13]    
 
 
 # Inital data to show (selected point)
@@ -99,7 +99,6 @@ Version = '''
 * **Coil Drivers**: DAQ
 * **Heater Driver**: MOSFET, 150kHz, square
 * **Heaters**: 1 x 8 Ohm (non-magnetic)'''
-
 
 
 ########### Initiate the app
@@ -153,9 +152,9 @@ app.layout = html.Div(children=[
                                 {'label': 'GA (200 sample, 14-03-21)', 'value': 3},  
                                 {'label': 'Gradient (189 sample, 15-03-21)', 'value':4},    
                                 {'label': 'Systematic (512 sample, 02-04-21)', 'value': 5}, 
-                                #{'label': 'GA (500 sample, DATE)', 'value':7}, 
+                                {'label': 'GA (500 sample, 10-04-21)', 'value':7}, 
                                 {'label': 'Gradient (492 sample, 11-04-21)', 'value':6}, 
-                                #{'label': 'GA (500 sample, 20-04-21)', 'value':8}, 
+                                {'label': 'GA (500 sample, 19-04-21)', 'value':8}, 
                             ],
                             value=2
                         ), 
@@ -251,7 +250,7 @@ app.layout = html.Div(children=[
 def update_figure(data_version):
   if data_version == 0 or data_version == 1 or data_version ==2 or data_version ==3 or data_version == 4 or data_version ==5:        
     A = 'Scan Type = 3D'
-  if data_version ==6 or data_version == 7 or data_version == 8:  
+  if data_version ==6 or data_version == 7 or data_version == 8 or data_version == 9:  
     A = 'Scan Type = 2D/1D'
   return A
 
