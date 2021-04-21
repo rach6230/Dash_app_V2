@@ -216,6 +216,7 @@ app.layout = html.Div(children=[
                                          html.Div(id='2D-title'),
                                          html.Div(id='2D-graph-container'),
                                          html.Div(id='facet-container'),
+                                         html.Br(), #new line
                                          html.Div(id='radioitems-sensitivity-container'),
                                          html.Div(id='hide_hanle_box2',
                                                   children = [
@@ -230,9 +231,15 @@ app.layout = html.Div(children=[
                                          html.Div(id='hide_sensitivity-box',
                                                   children = [
                                                       html.H6('Sensitivity'),
-                                                      html.Div(id='hide_sensitivity_scan')
+                                                      html.Div(id='hide_sensitivity_scan'),                                                   
                                                   ]
-                                                 ),                                         
+                                                 ),   
+                                         html.Div(id='hide_noise-box',
+                                                  children = [
+                                                      html.H6('Noise'),
+                                                      html.Div(id='hide_noise_scan')                                                      
+                                                  ]
+                                                 ),                                            
                                      ]
                                     ),       
                             html.Div(id='hide_plotter_box',
@@ -690,7 +697,7 @@ def update_figure(scan_type):
     if scan_type == 'Scan Type = 2D/1D':     
         A = dcc.RadioItems(
             id='value_dropdown_1D_sensitivity',
-            options=[{"label": i, "value": i} for i in ["Hanle Single Axis", "Sensitivity"]],
+            options=[{"label": i, "value": i} for i in ["Hanle Single Axis", "Sensitivity", "Noise"]],
             value='Sensitivity',
             inputStyle={"margin-left": "20px"}, # add space between radio items
             labelStyle={'display': 'inline-block'},
@@ -705,8 +712,9 @@ def update_figure(scan_type):
 def show_hide_element(visibility_state):
     if visibility_state == 'Sensitivity':
         return {'display': 'block'}
-    if visibility_state == 'Hanle Single Axis':
+    if visibility_state != 'Sensitivity':
         return {'display': 'none'}
+    
     
 ## Callback for Hanle 1 axis
 @app.callback(
@@ -715,8 +723,20 @@ def show_hide_element(visibility_state):
 def show_hide_element(visibility_state):
     if visibility_state == 'Hanle Single Axis':
         return {'display': 'block'}
-    if visibility_state == 'Sensitivity':
+    if visibility_state != 'Hanle Single Axis':
         return {'display': 'none'}  
+    
+## Callback for Hanle 1 axis
+@app.callback(
+    Output('hide_noise-box', 'style'),
+    Input('value_dropdown_1D_sensitivity', 'value'))
+def show_hide_element(visibility_state):
+    if visibility_state == 'Noise':
+        return {'display': 'block'}
+    if visibility_state != 'Noise':
+        return {'display': 'none'}     
+    
+    
     
 ## Call back for sensitivity SCAN
 @app.callback(
@@ -748,7 +768,54 @@ def update_figure(clickData, data_version, scan_type):
         df.reset_index(drop=True, inplace=True)
         df.columns = ["a","b", "Frequency (Hz)", "Photodiode Voltage (V)", "c","d"]
         df = df.apply(pd.to_numeric)
-        fig2 = px.line(df, x="Frequency (Hz)", y="Photodiode Voltage (V)", log_x=True, log_y=True) 
+        df2 = all_df[data_version] 
+        df2_f1 = df2[(df2['Temperature (C) ']== temp)]
+        df2_f2 = df2_f1[(df2_f1['Laser Power (uW) ']== lp)]
+        df2_f3 = df2_f2[(df2_f2['Detuning (GHz) ']== ld)]
+        vnt = df2_f3['V/nT']
+        vnt = vnt.apply(pd.to_numeric)
+        vnt = vnt.iloc[0,]
+        df["Photodiode Voltage (V)"]= (df["Photodiode Voltage (V)"]/vnt)*(1*10**-9) #convert to sensitivity
+        fig2 = px.line(df, x="Frequency (Hz)", y="Photodiode Voltage (V)", log_x=True, log_y=True,                  
+                       labels={"Photodiode Voltage (V)": "Sensitivity (T/√Hz)"},) 
+        fig2.update_layout(height=300)
+        fig2.update_layout(font=dict(size=8)) # Change font size        
+        fig2.update_layout(margin={'l': 0, 'b': 0, 't': 0, 'r': 10}, hovermode='closest') #Change margins           
+        B = dcc.Graph(figure=fig2, id='1D', config={'displayModeBar': False}),
+        return B    
+    
+## Call back for noise SCAN
+@app.callback(
+    Output('hide_noise_scan', 'children'),
+    Input('graph-with-slider', 'clickData'), 
+    Input('segselect', 'value'),
+    Input('HanleScanType', 'children'))
+def update_figure(clickData, data_version, scan_type):
+    if scan_type == 'Scan Type = 2D/1D':
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
+        if clickData == None:
+            x = 14
+            line = df2.iloc[x,] 
+            lp = line[2]
+            ld = line[1]
+            temp = line[0]
+        else:
+            temp = clickData['points'][0]['y']
+            lp = clickData['points'][0]['x']
+            ld = clickData['points'][0]['z']
+        filtered_df = Github_urls[(Github_urls['Temp']== temp)]
+        filtered_df2 = filtered_df[(filtered_df['Laser_power']== lp)]
+        filtered_df3 = filtered_df2[(filtered_df2['Laser_Detuning']== ld)]
+        data_url = filtered_df3.iloc[0,0]
+        df = pd.read_table(data_url)
+        df.columns = df.iloc[0]
+        df =df.iloc[1:]
+        df.reset_index(drop=True, inplace=True)
+        df.columns = ["a","b", "Frequency (Hz)", "Photodiode Voltage (V)", "c","d"]
+        df = df.apply(pd.to_numeric)
+        fig2 = px.line(df, x="Frequency (Hz)", y="Photodiode Voltage (V)", log_x=True, log_y=True,                  
+                       labels={"Photodiode Voltage (V)": "Noise (V/√Hz)"},) 
         fig2.update_layout(height=300)
         fig2.update_layout(font=dict(size=8)) # Change font size        
         fig2.update_layout(margin={'l': 0, 'b': 0, 't': 0, 'r': 10}, hovermode='closest') #Change margins           
@@ -1434,6 +1501,7 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(height=150)
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig  
+    
 
 if __name__ == '__main__':
     app.run_server()
