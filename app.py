@@ -26,6 +26,7 @@ ALL_data_fit_values_v10 = pd.read_csv('https://raw.githubusercontent.com/rach623
 ALL_data_fit_values_v11 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21-Full_fit_Data.csv')
 ALL_data_fit_values_v12 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21-Full_fit_Data.csv')
 ALL_data_fit_values_v13 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21-Full_fit_Data.csv')
+ALL_data_fit_values_v14 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21-Full_fit_Data.csv')
 
 # Create col of A/C:
 # 04-03-21 MLOOP-166-loop
@@ -50,10 +51,12 @@ ALL_data_fit_values_v10["SE"] =  abs(ALL_data_fit_values_v10['G2'])-abs(ALL_data
 ALL_data_fit_values_v11["V/nT"] =  abs(ALL_data_fit_values_v11['A(1D)'])/abs(ALL_data_fit_values_v11['G(1D)'])
 ALL_data_fit_values_v12["V/nT"] =  abs(ALL_data_fit_values_v12['A(1D)'])/abs(ALL_data_fit_values_v12['G(1D)'])
 ALL_data_fit_values_v13["V/nT"] =  abs(ALL_data_fit_values_v13['A(1D)'])/abs(ALL_data_fit_values_v13['G(1D)'])
+ALL_data_fit_values_v14["V/nT"] =  abs(ALL_data_fit_values_v14['A(1D)'])/abs(ALL_data_fit_values_v14['G(1D)'])
 
 # list of all data frames
 all_df=[ALL_data_fit_values_v5,ALL_data_fit_values_v6,ALL_data_fit_values_v7, ALL_data_fit_values_v8,
-        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11, ALL_data_fit_values_v12, ALL_data_fit_values_v13]    
+        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11, ALL_data_fit_values_v12, 
+        ALL_data_fit_values_v13,ALL_data_fit_values_v14]    
   
 
 ## Load data for sliders/ tables
@@ -77,11 +80,12 @@ Github_urls_v10 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_a
 Github_urls_v11 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21_Github_urls_sorted.csv")
 Github_urls_v12 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21_Github_urls_sorted.csv")
 Github_urls_v13 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21_Github_urls_sorted.csv")
+Github_urls_v14 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21_Github_urls_sorted.csv")
 
     
 # list of all data frames
 all_git_df=[Github_urls_v5, Github_urls_v6, Github_urls_v7, Github_urls_v8,Github_urls_v9,
-            Github_urls_v10, Github_urls_v11, Github_urls_v12, Github_urls_v13]    
+            Github_urls_v10, Github_urls_v11, Github_urls_v12, Github_urls_v13, Github_urls_v14]    
 
 
 # Inital data to show (selected point)
@@ -99,6 +103,7 @@ Version = '''
 * **Coil Drivers**: DAQ
 * **Heater Driver**: MOSFET, 150kHz, square
 * **Heaters**: 1 x 8 Ohm (non-magnetic)'''
+
 
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -153,6 +158,7 @@ app.layout = html.Div(children=[
                                 {'label': 'GA (500 sample, 10-04-21)', 'value':7}, 
                                 {'label': 'Gradient (492 sample, 11-04-21)', 'value':6}, 
                                 {'label': 'GA (500 sample, 19-04-21)', 'value':8}, 
+                                {'label': 'GA (500 sample, 21-04-21)', 'value':9},
                             ],
                             value=2
                         ), 
@@ -1530,7 +1536,6 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(height=150)
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig  
-
 
 if __name__ == '__main__':
     app.run_server()
