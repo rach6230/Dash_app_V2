@@ -9,33 +9,84 @@ import plotly.express as px
 ########### Define your variables
 tabtitle='SERF: Parameter Space Testing'
 
-#### Import all Fit Data links
-all_df = ['https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21-Full_fit_Data.csv',
-           'https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21-Full_fit_Data.csv']  
+#### Import Fit Data
+# 04-03-21 MLOOP-166-loop
+ALL_data_fit_values_v5 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv')
+# 08-03-21 GA-50-sample
+ALL_data_fit_values_v6 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21-Full_fit_Data.csv')
+# 12-03-21 MLOOP-500-loop
+ALL_data_fit_values_v7 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21-Full_fit_Data.csv')
+# 14-03-21GA 200-loop
+ALL_data_fit_values_v8 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21-Full_fit_Data.csv')
+# 15-03-21 Gradient 189 sample
+ALL_data_fit_values_v9 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21-Full_fit_Data.csv')
+# 04-02-21 Systematic 512 sample
+ALL_data_fit_values_v10 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21-Full_fit_Data.csv')
+## 2D 1D 
+ALL_data_fit_values_v11 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21-Full_fit_Data.csv')
+ALL_data_fit_values_v12 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21-Full_fit_Data.csv')
+ALL_data_fit_values_v13 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21-Full_fit_Data.csv')
+ALL_data_fit_values_v14 = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21-Full_fit_Data.csv')
+
+# Create col of A/C:
+# 04-03-21 MLOOP-166-loop
+ALL_data_fit_values_v5["V/nT"] =  abs(ALL_data_fit_values_v5['A'])/abs(ALL_data_fit_values_v5['G2'])
+ALL_data_fit_values_v5["SE"] =  abs(ALL_data_fit_values_v5['G2'])-abs(ALL_data_fit_values_v5['G1'])
+# 08-03-21 GA-50-sample
+ALL_data_fit_values_v6["V/nT"] =  abs(ALL_data_fit_values_v6['A'])/abs(ALL_data_fit_values_v6['G2'])
+ALL_data_fit_values_v6["SE"] =  abs(ALL_data_fit_values_v6['G2'])-abs(ALL_data_fit_values_v6['G1'])
+# 12-03-21 MLOOP-500-loop
+ALL_data_fit_values_v7["V/nT"] =  abs(ALL_data_fit_values_v7['A'])/abs(ALL_data_fit_values_v7['G2'])
+ALL_data_fit_values_v7["SE"] =  abs(ALL_data_fit_values_v7['G2'])-abs(ALL_data_fit_values_v7['G1'])
+# 14-03-21GA 200-loop
+ALL_data_fit_values_v8["V/nT"] =  abs(ALL_data_fit_values_v8['A'])/abs(ALL_data_fit_values_v8['G2'])
+ALL_data_fit_values_v8["SE"] =  abs(ALL_data_fit_values_v8['G2'])-abs(ALL_data_fit_values_v8['G1'])
+# 15-03-21 Gradient 189 sample
+ALL_data_fit_values_v9["V/nT"] =  abs(ALL_data_fit_values_v9['A'])/abs(ALL_data_fit_values_v9['G2'])
+ALL_data_fit_values_v9["SE"] =  abs(ALL_data_fit_values_v9['G2'])-abs(ALL_data_fit_values_v9['G1'])
+# 04-02-21 Systematic 512 sample
+ALL_data_fit_values_v10["V/nT"] =  abs(ALL_data_fit_values_v10['A'])/abs(ALL_data_fit_values_v10['G2'])
+ALL_data_fit_values_v10["SE"] =  abs(ALL_data_fit_values_v10['G2'])-abs(ALL_data_fit_values_v10['G1'])
+# 04-02-21 Systematic 512 sample
+ALL_data_fit_values_v11["V/nT"] =  abs(ALL_data_fit_values_v11['A(1D)'])/abs(ALL_data_fit_values_v11['G(1D)'])
+ALL_data_fit_values_v12["V/nT"] =  abs(ALL_data_fit_values_v12['A(1D)'])/abs(ALL_data_fit_values_v12['G(1D)'])
+ALL_data_fit_values_v13["V/nT"] =  abs(ALL_data_fit_values_v13['A(1D)'])/abs(ALL_data_fit_values_v13['G(1D)'])
+ALL_data_fit_values_v14["V/nT"] =  abs(ALL_data_fit_values_v14['A(1D)'])/abs(ALL_data_fit_values_v14['G(1D)'])
+
+# list of all data frames
+all_df=[ALL_data_fit_values_v5,ALL_data_fit_values_v6,ALL_data_fit_values_v7, ALL_data_fit_values_v8,
+        ALL_data_fit_values_v9, ALL_data_fit_values_v10, ALL_data_fit_values_v11, ALL_data_fit_values_v12, 
+        ALL_data_fit_values_v13,ALL_data_fit_values_v14]    
+  
 
 ## Load data for sliders/ tables
-df = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Full_fit_Data.csv')
-D1Ddf = pd.read_csv('https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21-Full_fit_Data.csv')
+df = ALL_data_fit_values_v5
+D1Ddf = ALL_data_fit_values_v11
 
 # File names
-all_git_df=["https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21_Github_urls_sorted.csv",
-            "https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21_Github_urls_sorted.csv"]
+# 04-03-21 MLOOP-166-loop
+Github_urls_v5 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/04-03-21-Github_urls_sorted.csv")
+# 08-03-21 GA-50-sample
+Github_urls_v6 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/08-03-21Github_urls_sorted.csv")
+# 12-03-21 MLOOP-500-loop
+Github_urls_v7 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/12-03-21_Github_urls_sorted.csv")
+# 14-03-21GA 200-loop
+Github_urls_v8 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/14-03-21_Github_urls_sorted.csv")
+# 15-03-21 Gradient 189 sample
+Github_urls_v9 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/15-03-21_Github_urls_sorted.csv")
+# 04-02-21 Systematic 512 sample
+Github_urls_v10 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/02-04-21_Github_urls_sorted.csv")
+## 2D
+Github_urls_v11 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/11-04-21_Github_urls_sorted.csv")
+Github_urls_v12 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/10-04-21_Github_urls_sorted.csv")
+Github_urls_v13 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/19-04-21_Github_urls_sorted.csv")
+Github_urls_v14 = pd.read_csv("https://raw.githubusercontent.com/rach6230/Dash_app_V2/main/Data/Fit_and_Link_References/21-04-21_Github_urls_sorted.csv")
+
+    
+# list of all data frames
+all_git_df=[Github_urls_v5, Github_urls_v6, Github_urls_v7, Github_urls_v8,Github_urls_v9,
+            Github_urls_v10, Github_urls_v11, Github_urls_v12, Github_urls_v13, Github_urls_v14]    
+
 
 # Inital data to show (selected point)
 x = 14
@@ -54,6 +105,11 @@ Version = '''
 * **Heaters**: 1 x 8 Ohm (non-magnetic)'''
 
 
+########### Initiate the app
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+app.title=tabtitle
 
 ########### Set up the layout
 app.layout = html.Div(children=[
@@ -263,77 +319,65 @@ def show_hide_element(scan_type):
 @app.callback(Output('drop_down_custom1', 'children'),
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
-def display_click_data(data_version, scan_type): 
-    df2 = pd.read_csv(all_df2[data_version])
-    if scan_type == 'Scan Type = 3D':
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])        
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:21]]
-    if scan_type == 'Scan Type = 2D/1D': 
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
-    A =  dcc.Dropdown(id='x_value_dropdown',
+def display_click_data(data_version, scan_type):
+  df2 = all_df[data_version] 
+  if scan_type == 'Scan Type = 3D':
+    O = [{"label": i, "value": i} for i in df2.columns[0:21]]
+  if scan_type == 'Scan Type = 2D/1D':  
+    O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
+  A =  dcc.Dropdown(id='x_value_dropdown',
                       options=O,
                       value='V/nT',
                       style={'fontSize': 12}),           
-    return A
+  return A
 
 @app.callback(Output('drop_down_custom2', 'children'),
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-    df2 = pd.read_csv(all_df2[data_version])
-    if scan_type == 'Scan Type = 3D':
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:21]]
-    if scan_type == 'Scan Type = 2D/1D': 
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
-    A =  dcc.Dropdown(id='y_value_dropdown',
+  df2 = all_df[data_version] 
+  if scan_type == 'Scan Type = 3D':
+    O = [{"label": i, "value": i} for i in df2.columns[0:21]]
+  if scan_type == 'Scan Type = 2D/1D':  
+    O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
+  A =  dcc.Dropdown(id='y_value_dropdown',
                       options=O,
                       value='V/nT',
                       style={'fontSize': 12}),           
-    return A
+  return A
 
 @app.callback(Output('drop_down_custom3', 'children'),
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-    df2 = pd.read_csv(all_df2[data_version])
-    if scan_type == 'Scan Type = 3D':
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:21]]
-    if scan_type == 'Scan Type = 2D/1D': 
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
-    A =  dcc.Dropdown(id='z_value_dropdown',
+  df2 = all_df[data_version] 
+  if scan_type == 'Scan Type = 3D':
+    O = [{"label": i, "value": i} for i in df2.columns[0:21]]
+  if scan_type == 'Scan Type = 2D/1D':  
+    O = [{"label": i, "value": i} for i in df2.columns[0:27]]+[{"label": i, "value": i} for i in df2.columns[28:29]] 
+  A =  dcc.Dropdown(id='z_value_dropdown',
                       options=O,
-                      value='V/nT',
+                      value='',
                       style={'fontSize': 12}),           
-    return A
+  return A
 
 ############ Callbacks for radio element of 3D graph #############################
 @app.callback(Output('value_dropdown_container', 'children'),
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-    df2 = pd.read_csv(all_df2[data_version])
-    if scan_type == 'Scan Type = 3D':
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
-        O = [{"label": i, "value": i} for i in df2.columns[19:21]]+[{"label": i, "value": i} for i in df2.columns[0:7]]
-    if scan_type == 'Scan Type = 2D/1D':  
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        O = [{"label": i, "value": i} for i in df2.columns[28:29]]+[{"label": i, "value": i} for i in df2.columns[7:27]] 
-    A =  dcc.RadioItems(id='value_dropdown',
-                        options=O,
-                        value='V/nT',
-                        inputStyle={"margin-left": "20px"}, # add space between radio items
-                        labelStyle={'display': 'inline-block'},
-                        style={'fontSize': 12}),           
-    return A
+  df2 = all_df[data_version] 
+  if scan_type == 'Scan Type = 3D':
+    O = [{"label": i, "value": i} for i in df2.columns[19:21]]+[{"label": i, "value": i} for i in df2.columns[0:7]]
+  if scan_type == 'Scan Type = 2D/1D':  
+    O = [{"label": i, "value": i} for i in df2.columns[28:29]]+[{"label": i, "value": i} for i in df2.columns[7:27]] 
+  A =  dcc.RadioItems(id='value_dropdown',
+                      options=O,
+                      value='V/nT',
+                      inputStyle={"margin-left": "20px"}, # add space between radio items
+                      labelStyle={'display': 'inline-block'},
+                      style={'fontSize': 12}),           
+  return A
 
     
     
@@ -343,13 +387,10 @@ def display_click_data(data_version, scan_type):
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]    
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])    
     A1 = 'A'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     A1 = 'A(1D)'   
   A = dcc.Input(id="A_min", type="number",debounce=True, value = df2[A1].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="A_max", type="number",debounce=True, value = df2[A1].max(), style={'width':'50%', 'fontSize': 12})
@@ -365,14 +406,11 @@ def display_click_data(data_version, scan_type):
     Input("A_max", "value"),
     Input('HanleScanType', 'children'))
 def number_render(data_version, A_min, A_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]    
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
     A = 'A'
     TEXT = "Full A range: {} to {}"
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     A = 'A(1D)'       
     TEXT ="Full A (1D) range: {} to {}"
   A = TEXT.format(round(df2[A].min(),3), round(df2[A].max(), 3))
@@ -386,12 +424,7 @@ def number_render(data_version, A_min, A_max, scan_type):
 @app.callback(Output('V/nT_range_container', 'children'),
               Input('segselect', 'value'))
 def display_click_data(data_version):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])     
-  if scan_type == 'Scan Type = 2D/1D':    
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
+  df2 = all_df[data_version]   
   A = dcc.Input(id="V/nT_min", type="number",debounce=True, value = df2['V/nT'].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="V/nT_max", type="number",debounce=True, value = df2['V/nT'].max(), style={'width':'50%', 'fontSize': 12})
   C = html.Div([A,
@@ -405,12 +438,7 @@ def display_click_data(data_version):
     Input("V/nT_min", "value"),
     Input("V/nT_max", "value"))
 def number_render(data_version, VnT_min, VnT_max):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])     
-  if scan_type == 'Scan Type = 2D/1D':    
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])   
+  df2 = all_df[data_version]    
   A = "Full V/nT range: {} to {}".format(round(df2['V/nT'].min(),3), round(df2['V/nT'].max(), 3))
   B = "Selected V/nT range: {} to {}".format(round(VnT_min, 3), round(VnT_max, 3))
   C = html.Div([
@@ -424,13 +452,10 @@ def number_render(data_version, VnT_min, VnT_max):
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version,scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]    
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])    
-    G1 = 'G1'    
-  if scan_type == 'Scan Type = 2D/1D':    
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
+    G1 = 'G1'
+  if scan_type == 'Scan Type = 2D/1D':
     G1 = 'G(1D)'    
   A = dcc.Input(id="G1_min", type="number",debounce=True, value = df2[G1].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G1_max", type="number",debounce=True, value = df2[G1].max(), style={'width':'50%', 'fontSize': 12})
@@ -448,15 +473,12 @@ def display_click_data(data_version,scan_type):
     Input("G1_max", "value"),
     Input('HanleScanType', 'children'))
 def number_render(data_version, G1_min, G1_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]     
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])    
-    G1 = 'G1'    
-    TEXT = "Full G1 range: {} to {}"      
-  if scan_type == 'Scan Type = 2D/1D':    
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
-    G1 = 'G(1D)'
+    G1 = 'G1'
+    TEXT = "Full G1 range: {} to {}"    
+  if scan_type == 'Scan Type = 2D/1D':
+    G1 = 'G(1D)' 
     TEXT ="Full G (1D) range: {} to {}"
   A = TEXT.format(round(df2[G1].min(),5), round(df2[G1].max(),5))
   B = "Selected range: {} to {}".format(round(G1_min, 5), round(G1_max, 5))
@@ -470,13 +492,11 @@ def number_render(data_version, G1_min, G1_max, scan_type):
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]  
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])    
     G2 = 'G2'
-  if scan_type == 'Scan Type = 2D/1D':    
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
+    TEXT = "Full G2 range: {} to {}"    
+  if scan_type == 'Scan Type = 2D/1D':
     G2 = 'G2(2D)' 
   A = dcc.Input(id="G2_min", type="number",debounce=True, value = df2[G2].min(), style={'width':'50%', 'fontSize': 12})
   B = dcc.Input(id="G2_max", type="number",debounce=True, value = df2[G2].max(), style={'width':'50%', 'fontSize': 12})
@@ -493,14 +513,13 @@ def display_click_data(data_version, scan_type):
     Input("G2_max", "value"),
     Input('HanleScanType', 'children'))
 def number_render(data_version, G2_min, G2_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]  
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
-    G2 = 'G2' 
+    G2 = 'G2'
+    TEXT = "Full G2 range: {} to {}"    
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-    G2 = 'G2(2D)'    
+    G2 = 'G2(2D)' 
+    TEXT ="Full G2 (2D) range: {} to {}"    
   A = "Full G2 range: {} to {}".format(round(df2[G2].min(),5), round(df2[G2].max(),5))
   B = "Selected G2 range: {} to {}".format(round(G2_min, 5), round(G2_max, 5))
   C = html.Div([
@@ -508,18 +527,68 @@ def number_render(data_version, G2_min, G2_max, scan_type):
                 html.Div(B, style={'fontSize': 12})])
   return C
 
+## G1 error_
+
+#@app.callback(Output('G1_error_range_container', 'children'),
+#              Input('segselect', 'value'))
+#def display_click_data(data_version):
+#  df2 = all_df[data_version]   
+#  A = dcc.Input(id="G1_error_min", type="number",debounce=True, value = df2['Error_G1'].min(), style={'width':'50%', 'fontSize': 12})
+#  B = dcc.Input(id="G1_error_max", type="number",debounce=True, value = df2['Error_G1'].max(), style={'width':'50%', 'fontSize': 12})
+#  C = html.Div([A,
+#                B])  
+#  return C#
+
+# displaying values of G1 error
+#@app.callback(
+#    Output("G1_error_range_output", "children"),
+#    Input('segselect', 'value'),
+#    Input("G1_error_min", "value"),
+#    Input("G1_error_max", "value"))
+#def number_render(data_version, G1_error_min, G1_error_max):
+#  df2 = all_df[data_version]    
+#  A = "Full G1 error range: {} to {}".format(round(df2['Error_G1'].min(),5), round(df2['Error_G1'].max(),5))
+#  B = "Selected G1 error range: {} to {}".format(round(G1_error_min, 5), round(G1_error_max, 5))
+#  C = html.Div([
+#                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+#                html.Div(B, style={'fontSize': 12})])
+#  return C
+
+# G2 error
+#@app.callback(Output('G2_error_range_container', 'children'),
+#              Input('segselect', 'value'))
+#def display_click_data(data_version):
+#  df2 = all_df[data_version]    
+#  A = dcc.Input(id="G2_error_min", type="number",debounce=True, value = df2['Error_G2'].min(), style={'width':'50%', 'fontSize': 12})
+#  B = dcc.Input(id="G2_error_max", type="number",debounce=True, value = df2['Error_G2'].max(), style={'width':'50%', 'fontSize': 12})
+#  C = html.Div([A,
+#                B])  
+#  return C
+
+# displaying values of G2 error
+#@app.callback(
+#    Output("G2_error_range_output", "children"),
+#    Input('segselect', 'value'),
+#    Input("G2_error_min", "value"),
+#    Input("G2_error_max", "value"))
+#def number_render(data_version, G2_error_min, G2_error_max):
+#  df2 = all_df[data_version]    
+#  A = "Full G2 range: {} to {}".format(round(df2['Error_G2'].min(),5), round(df2['Error_G2'].max(),5))
+#  B = "Selected G2 range: {} to {}".format(round(G2_error_min, 5), round(G2_error_max, 5))
+#  C = html.Div([
+#                html.Div(A, style={'margin-top': 20,'fontSize': 12}),
+#                html.Div(B, style={'fontSize': 12})])
+#  return C
+
 ############ Callbacks for slider containers #############################
 @app.callback(Output('Temp_slider_container', 'children'),
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])       
+  df2 = all_df[data_version]   
+  if scan_type == 'Scan Type = 3D':        
     temp = 'Temp'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     temp = 'Temperature (C) '
   A = dcc.RangeSlider(id = "temp-range-slider",
                       min=df2[temp].min(),
@@ -538,13 +607,10 @@ def display_click_data(data_version, scan_type):
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
+  df2 = all_df[data_version]     
   if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
     LP = 'Laser_Power'
   if scan_type == 'Scan Type = 2D/1D': 
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     LP = 'Laser Power (uW) '
   A = dcc.RangeSlider(
                           id='LP-range-slider',
@@ -568,13 +634,10 @@ def display_click_data(data_version, scan_type):
               Input('segselect', 'value'),
               Input('HanleScanType', 'children'))
 def display_click_data(data_version, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])     
+  df2 = all_df[data_version] 
+  if scan_type == 'Scan Type = 3D':        
     LD = 'Laser_Detuning'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     LD = 'Detuning (GHz) ' 
   A = dcc.RangeSlider(id='LD-range-slider',
                       min=-20,
@@ -615,10 +678,8 @@ def display_click_data(data_version, scan_type):
 def update_figure(TEMP, LP, VnT_min, VnT_max, LD, data_version, x_value, y_value, z_value, G1_min, G1_max,
                   G2_min, G2_max, #G1_error_min, G1_error_max, G2_error_min, G2_error_max,
                   A_min, A_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])      
+  df2 = all_df[data_version]   
+  if scan_type == 'Scan Type = 3D':        
     temp='Temp'
     ld='Laser_Detuning'
     lp='Laser_Power'
@@ -626,7 +687,6 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, data_version, x_value, y_value
     G1 = 'G1'
     G2 ='G2'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     temp='Temperature (C) '
     ld='Detuning (GHz) '
     lp='Laser Power (uW) '
@@ -721,9 +781,8 @@ def show_hide_element(visibility_state, scan_type):
     Input('HanleScanType', 'children'))
 def update_figure(clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
-        Github_urls = pd.read_csv(all_git_df[data_version])     
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
         if clickData == None:
             x = 14
             line = df2.iloc[x,] 
@@ -744,6 +803,7 @@ def update_figure(clickData, data_version, scan_type):
         df.reset_index(drop=True, inplace=True)
         df.columns = ["a","b", "Frequency (Hz)", "Photodiode Voltage (V)", "c","d"]
         df = df.apply(pd.to_numeric)
+        df2 = all_df[data_version] 
         df2_f1 = df2[(df2['Temperature (C) ']== temp)]
         df2_f2 = df2_f1[(df2_f1['Laser Power (uW) ']== lp)]
         df2_f3 = df2_f2[(df2_f2['Detuning (GHz) ']== ld)]
@@ -767,9 +827,8 @@ def update_figure(clickData, data_version, scan_type):
     Input('HanleScanType', 'children'))
 def update_figure(clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
         if clickData == None:
             x = 14
             line = df2.iloc[x,] 
@@ -877,10 +936,8 @@ def display_click_data(data_version):
 def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_max,
                   G2_min, G2_max,# G1_error_min, G1_error_max, G2_error_min, G2_error_max, 
                   A_min, A_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])       
+  df2 = all_df[data_version]      
+  if scan_type == 'Scan Type = 3D':        
     temp='Temp'
     ld='Laser_Detuning'
     lp='Laser_Power'
@@ -888,7 +945,6 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
     G1 = 'G1'
     G2 ='G2'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     temp='Temperature (C) '
     ld='Detuning (GHz) '
     lp='Laser Power (uW) '
@@ -915,10 +971,7 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
     Input('segselect', 'value'),
     Input('value_dropdown', 'value'))
 def display_click_data(clickData, data_version, parameter_value):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])   
+  df2 = all_df[data_version]    
   if clickData == None:
     x = 14
     line = df2.iloc[x,] 
@@ -987,10 +1040,8 @@ def display_value(value):
 def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_max,
                   G2_min, G2_max, #G1_error_min, G1_error_max, G2_error_min, G2_error_max, 
                   A_min, A_max, scan_type):
-  df2 = pd.read_csv(all_df2[data_version])
-  if scan_type == 'Scan Type = 3D':
-    df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-    df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])       
+  df2 = all_df[data_version]   
+  if scan_type == 'Scan Type = 3D':        
     temp='Temp'
     ld='Laser_Detuning'
     lp='Laser_Power'
@@ -998,7 +1049,6 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
     G1 = 'G1'
     G2 ='G2'
   if scan_type == 'Scan Type = 2D/1D':
-    df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
     temp='Temperature (C) '
     ld='Detuning (GHz) '
     lp='Laser Power (uW) '
@@ -1033,10 +1083,8 @@ def update_figure(TEMP, LP, VnT_min, VnT_max, LD, col, data_version, G1_min, G1_
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
 def on_trace_click(clickData, data_version,scan_type):
+    df2 = all_df[data_version]  
     if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
@@ -1060,10 +1108,8 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
 def on_trace_click(clickData, data_version,scan_type):
+    df2 = all_df[data_version]  
     if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
@@ -1087,10 +1133,9 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('graph-with-slider', 'clickData'), 
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
-def on_trace_click(clickData, data_version,scan_type):  
+def on_trace_click(clickData, data_version,scan_type):
+    df2 = all_df[data_version]  
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
@@ -1114,9 +1159,8 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
 def on_trace_click(clickData, data_version,scan_type):
+    df2 = all_df[data_version]  
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
@@ -1139,12 +1183,10 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('graph-with-slider', 'clickData'), 
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
-def update_figure(clickData, data_version, scan_type):   
+def update_figure(clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1']) 
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
         if clickData == None:
             x = 14
             line = df2.iloc[x,] 
@@ -1193,9 +1235,8 @@ def update_figure(clickData, data_version, scan_type):
     Input('HanleScanType', 'children'))
 def update_figure(clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])  
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
         if clickData == None:
             x = 14
             line = df2.iloc[x,] 
@@ -1235,9 +1276,8 @@ def update_figure(clickData, data_version, scan_type):
     Input('HanleScanType', 'children'))
 def update_figure(clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]        
         if clickData == None:
             x = 14
             line = df2.iloc[x,] 
@@ -1292,11 +1332,9 @@ def display_click_data(scan_type):
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
 def display_click_data(clickData2, clickData, data_version, scan_type):
-    if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1'])     
-        Github_urls = pd.read_csv(all_git_df[data_version])
+    if scan_type == 'Scan Type = 3D': # 3D requires the back data to find z
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]  
         if clickData == None:
             x = 14
             line = df2.iloc[x,]
@@ -1345,11 +1383,9 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
     Input('segselect', 'value'),
     Input('HanleScanType', 'children'))
 def display_click_data(clickData2, clickData, data_version, scan_type):
-    if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1']) 
-        Github_urls = pd.read_csv(all_git_df[data_version])
+    if scan_type == 'Scan Type = 3D': # 3D requires the back data to find z
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]      
         if clickData == None:
             x = 14
             line = df2.iloc[x,]
@@ -1387,9 +1423,8 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)']) 
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]      
         if clickData == None:
             x = 14
             line = df2.iloc[x,]
@@ -1430,10 +1465,8 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
     Input('HanleScanType', 'children'))
 def display_click_data(clickData2, clickData, data_version, scan_type):
     if scan_type == 'Scan Type = 3D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A'])/abs(df2['G2'])
-        df2["SE"] =  abs(df2['G2'])-abs(df2['G1']) 
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]          
         if clickData == None:
             x = 14
             line = df2.iloc[x,]
@@ -1471,9 +1504,8 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig
     if scan_type == 'Scan Type = 2D/1D':
-        df2 = pd.read_csv(all_df2[data_version])
-        df2["V/nT"] =  abs(df2['A(1D)'])/abs(df2['G(1D)'])
-        Github_urls = pd.read_csv(all_git_df[data_version])
+        df2 = all_df[data_version] 
+        Github_urls = all_git_df[data_version]      
         if clickData == None:
             x = 14
             line = df2.iloc[x,]
