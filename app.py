@@ -106,6 +106,13 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 app.title=tabtitle
 
+########### Initiate the app
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+## Start Juptyer_dash app and link to style sheet
+app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+
 ########### Set up the layout
 app.layout = html.Div(children=[
   html.Div(className='row',  # Define the row elemen
@@ -230,13 +237,13 @@ app.layout = html.Div(children=[
                                                  ),
                                          html.Div(id='hide_sensitivity-box',
                                                   children = [
-                                                      html.H6('Sensitivity'),
+                                                      html.H6('Sensitivity', id = 'sensitivity-title'),
                                                       html.Div(id='hide_sensitivity_scan'),                                                   
                                                   ]
                                                  ),   
                                          html.Div(id='hide_noise-box',
                                                   children = [
-                                                      html.H6('Noise'),
+                                                      html.H6('Noise', id='noise-title'),
                                                       html.Div(id='hide_noise_scan')                                                      
                                                   ]
                                                  ),                                            
@@ -260,8 +267,6 @@ app.layout = html.Div(children=[
 ]
 )
 
-
-
 ##################### Call back for characterising data 3D or 2D/1D ########################
 @app.callback(Output('HanleScanType', 'children'),
               Input('segselect', 'value'))
@@ -272,6 +277,26 @@ def update_figure(data_version):
     A = 'Scan Type = 2D/1D'
   return A
 
+
+## Callback for hiding sensitivity and noise titles
+@app.callback(
+    Output('noise-title', 'style'),
+    Input('HanleScanType', 'children'))
+def show_hide_element(scan_type):
+    if scan_type == 'Scan Type = 2D/1D':   
+        return {'display': 'block'}
+    if scan_type == 'Scan Type = 3D': 
+        return {'display': 'none'}     
+
+@app.callback(
+    Output('sensitivity-title', 'style'),
+    Input('HanleScanType', 'children'))
+def show_hide_element(scan_type):
+    if scan_type == 'Scan Type = 2D/1D':   
+        return {'display': 'block'}
+    if scan_type == 'Scan Type = 3D': 
+        return {'display': 'none'}        
+    
 
 ## Callback for hiding tables
 @app.callback(Output('hide_3D_table_box', 'style'),         
@@ -707,37 +732,48 @@ def update_figure(scan_type):
     
 ## Callback for sensitivity plotter
 @app.callback(
-   Output('hide_sensitivity-box', 'style'),
-   [Input('value_dropdown_1D_sensitivity', 'value')])
-def show_hide_element(visibility_state):
-    if visibility_state == 'Sensitivity':
-        return {'display': 'block'}
-    if visibility_state != 'Sensitivity':
-        return {'display': 'none'}
+    Output('hide_sensitivity-box', 'style'),
+    Input('value_dropdown_1D_sensitivity', 'value'),
+    Input('HanleScanType', 'children'))
+def show_hide_element(visibility_state, scan_type):
+    if scan_type == 'Scan Type = 2D/1D':   
+        if visibility_state == 'Sensitivity':
+            return {'display': 'block'}
+        if visibility_state != 'Sensitivity':
+            return {'display': 'none'}
+    if scan_type == 'Scan Type = 3D': 
+        return {'display': 'none'}        
     
     
 ## Callback for Hanle 1 axis
 @app.callback(
     Output('hide_hanle_box2', 'style'),
-    Input('value_dropdown_1D_sensitivity', 'value'))
-def show_hide_element(visibility_state):
-    if visibility_state == 'Hanle Single Axis':
-        return {'display': 'block'}
-    if visibility_state != 'Hanle Single Axis':
-        return {'display': 'none'}  
+    Input('value_dropdown_1D_sensitivity', 'value'),
+    Input('HanleScanType', 'children'))
+def show_hide_element(visibility_state, scan_type):
+    if scan_type == 'Scan Type = 2D/1D':     
+        if visibility_state == 'Hanle Single Axis':
+            return {'display': 'block'}
+        if visibility_state != 'Hanle Single Axis':
+            return {'display': 'none'}  
+    if scan_type == 'Scan Type = 3D':  
+        return {'display': 'block'}        
     
-## Callback for Hanle 1 axis
+## Callback for Noise
 @app.callback(
     Output('hide_noise-box', 'style'),
-    Input('value_dropdown_1D_sensitivity', 'value'))
-def show_hide_element(visibility_state):
-    if visibility_state == 'Noise':
-        return {'display': 'block'}
-    if visibility_state != 'Noise':
-        return {'display': 'none'}     
-    
-    
-    
+    Input('value_dropdown_1D_sensitivity', 'value'),
+    Input('HanleScanType', 'children'))
+def show_hide_element(visibility_state, scan_type):
+    if scan_type == 'Scan Type = 2D/1D':       
+        if visibility_state == 'Noise':
+            return {'display': 'block'}
+        if visibility_state != 'Noise':
+            return {'display': 'none'} 
+    if scan_type == 'Scan Type = 3D':  
+        return {'display': 'none'}
+        
+
 ## Call back for sensitivity SCAN
 @app.callback(
     Output('hide_sensitivity_scan', 'children'),
@@ -1125,7 +1161,7 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('HanleScanType', 'children'))
 def on_trace_click(clickData, data_version,scan_type):
     df2 = all_df[data_version]  
-    if scan_type == 'Scan Type = 2D/1D':
+    if scan_type == 'Scan Type = 2D/1D' & data_version!= 7:
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
@@ -1320,9 +1356,9 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         newdf = df.apply(pd.to_numeric)  
         z_list = sorted(list(set(newdf['Z  Field (nT)'])))
         if clickData2 == None:
-            x = 0
-            y = 0
-            z = 0
+            x = 1000
+            y = 1000
+            z = 1000
         else:
             y = clickData2['points'][0]['y']
             x = clickData2['points'][0]['x']
@@ -1371,9 +1407,9 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         newdf = df.apply(pd.to_numeric)  
         z_list = sorted(list(set(newdf['Z  Field (nT)'])))
         if clickData2 == None:
-            x = 0
-            y = 0
-            z = 0
+            x = 1000
+            y = 1000
+            z = 1000
         else:
             y = clickData2['points'][0]['y']
             x = clickData2['points'][0]['x']
@@ -1452,9 +1488,9 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         newdf = df.apply(pd.to_numeric)  
         z_list = sorted(list(set(newdf['Z  Field (nT)'])))
         if clickData2 == None:
-            x = 0
-            y = 0
-            z = 0
+            x = 1000
+            y = 1000
+            z = 1000
         else:
             y = clickData2['points'][0]['y']
             x = clickData2['points'][0]['x']
@@ -1501,7 +1537,7 @@ def display_click_data(clickData2, clickData, data_version, scan_type):
         fig.update_layout(height=150)
         fig.update_layout(font=dict(size=8)) # Change font size
         return fig  
-    
+
 
 if __name__ == '__main__':
     app.run_server()
