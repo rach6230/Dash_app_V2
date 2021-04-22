@@ -106,13 +106,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 app.title=tabtitle
 
-########### Initiate the app
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-## Start Juptyer_dash app and link to style sheet
-app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
-#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-
 ########### Set up the layout
 app.layout = html.Div(children=[
   html.Div(className='row',  # Define the row elemen
