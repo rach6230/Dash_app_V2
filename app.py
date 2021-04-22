@@ -1154,7 +1154,7 @@ def on_trace_click(clickData, data_version,scan_type):
     Input('HanleScanType', 'children'))
 def on_trace_click(clickData, data_version,scan_type):
     df2 = all_df[data_version]  
-    if scan_type == 'Scan Type = 2D/1D' & data_version!= 7:
+    if scan_type == 'Scan Type = 2D/1D':
         if clickData== None:
             x = 14
             line = df2.iloc[x,] 
